@@ -1,5 +1,9 @@
 const http = require('http');
 const app = require('./app');
+const { initCronJobs } = require('./services/cronService');
+
+// Initialize Cron Jobs
+initCronJobs();
 
 // Get port from environment and store in Express.
 const port = process.env.PORT || 5000;

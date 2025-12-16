@@ -173,7 +173,7 @@ async function fetchJobsListPage({ page = 1, search = '' } = {}) {
  * @param {string} [options.search=''] - Search query
  * @returns {Promise<Object>} - Complete result with meta and all jobs including descriptions
  */
-async function fetchJobsList({ page = 1, search = '' } = {}) {
+async function scrapeInfoPark({ page = 1, search = '' } = {}) {
     try {
         // First, fetch page 1 to get total_pages
         console.log(`Fetching page 1 to determine total pages...`);
@@ -222,13 +222,7 @@ async function fetchJobsList({ page = 1, search = '' } = {}) {
 
         console.log(`Completed fetching all job descriptions.`);
 
-        return {
-            meta: {
-                ...firstPageResult.meta,
-                total_jobs: allJobs.length
-            },
-            jobs: allJobs
-        };
+        return allJobs;
     } catch (error) {
         console.error('Error fetching jobs:', error.message);
         throw new Error('Failed to fetch job listings.');
@@ -236,13 +230,15 @@ async function fetchJobsList({ page = 1, search = '' } = {}) {
 }
 
 // --- Test Execution ---
-(async () => {
-    try {
-        const result = await fetchJobsList({ page: 1 });
-        console.log(JSON.stringify(result, null, 2));
-    } catch (error) {
-        console.error('Error:', error.message);
-    }
-})();
+if (require.main === module) {
+    (async () => {
+        try {
+            const result = await scrapeInfoPark({ page: 1 });
+            console.log(JSON.stringify(result, null, 2));
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    })();
+}
 
-module.exports = { fetchJobsList };
+module.exports = { scrapeInfoPark };
