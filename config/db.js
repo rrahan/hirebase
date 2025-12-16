@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { drizzle } = require('drizzle-orm/node-postgres');
 const { Pool } = require('pg');
-const schema = require('../db/schema');
+const schema = require('../schema');
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
@@ -10,8 +10,8 @@ if (!process.env.DATABASE_URL) {
 // Use single DATABASE_URL connection string (works with NeonDB and other PostgreSQL providers)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL.includes('neon.tech') || process.env.DATABASE_URL.includes('sslmode=require') 
-    ? { rejectUnauthorized: false } 
+  ssl: process.env.DATABASE_URL.includes('neon.tech') || process.env.DATABASE_URL.includes('sslmode=require')
+    ? { rejectUnauthorized: false }
     : false,
 });
 
