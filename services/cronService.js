@@ -8,6 +8,7 @@ const { scrapeSmartCity } = require('./scrapeSmartCity');
 const { scrapeCyberPark } = require('./scrapeCyberPark');
 const { scrapeULCyberPark } = require('./scrapeULCyberPark');
 const { scrapeInfoPark } = require('./scrapeInfoPark');
+const { processRawJobs } = require('./jobCleanerService');
 
 
 /**
@@ -106,6 +107,17 @@ function initCronJobs() {
     });
 
     console.log('[Cron] Daily scraper job scheduled for 11:30 PM IST.');
+
+    // Schedule Job Cleaner for 11:55 PM IST
+    // 55 23 * * *
+    cron.schedule('55 23 * * *', () => {
+        processRawJobs();
+    }, {
+        scheduled: true,
+        timezone: "Asia/Kolkata"
+    });
+
+    console.log('[Cron] Job Cleaner service scheduled for 11:55 PM IST.');
 }
 
 module.exports = {
