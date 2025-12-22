@@ -12,7 +12,9 @@ function cleanCompanyName(name) {
     // Order matters: longer phrases should be matched first if they contain shorter ones
     const suffixes = [
         'Private Limited', 'Private Ltd', 'Pvt Ltd', 'Pvt. Ltd.', 'Pvt. Ltd', 'Pvt.Ltd',
-        'PvtLtd', '.Pvt', 'Pvt', 'Pvt. Ltd.', 'Pvt Ltd.', 'Pvt Ltd.', '.', '(P) Ltd', '(P)', '(P) Ltd.', 'P(Ltd)',
+        'PvtLtd', '.Pvt', 'Pvt', 'Pvt. Ltd.', 'Pvt Ltd.', 'Pvt Ltd.', '.',
+        '(P) Ltd', '(P)', '(P) Ltd.', 'P(Ltd)',
+        '(L) Ltd', '(L)', '(L) Ltd.', 'L(Ltd)', // Added (L) variants
         'Pvt Limited', 'Private Limited.', 'Private Ltd',
         'Public Limited', 'Pub. Ltd.',
         'Limited', 'Ltd.', 'Ltd',
@@ -28,9 +30,12 @@ function cleanCompanyName(name) {
         // Let's stick to the corporate structures mainly.
     ];
 
+    // Escape special regex characters in suffixes
+    const escapedSuffixes = suffixes.map(s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+
     // Create a regex that matches these suffixes at the end of the string
     // preceded by optional comma and whitespace
-    const regex = new RegExp(`(?:,\\s*|\\s+)(?:${suffixes.join('|')})\\.?(?=$)`, 'i');
+    const regex = new RegExp(`(?:,\\s*|\\s+)(?:${escapedSuffixes.join('|')})\\.?(?=$)`, 'i');
 
     // Remove the suffix
     cleaned = cleaned.replace(regex, '');

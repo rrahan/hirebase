@@ -5,6 +5,7 @@ const companies = pgTable('companies', {
   name: varchar('name').notNull(),
   logo: varchar('logo'),
   location: varchar('location'),
+  website: varchar('website')
 });
 
 module.exports = { companies };

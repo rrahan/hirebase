@@ -11,6 +11,7 @@ const jobs = pgTable('jobs', {
     company_email: varchar('company_email'),
     description: text('description'),
     level: varchar('level'),
+    website: varchar('website')
 });
 
 module.exports = { jobs };
