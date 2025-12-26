@@ -4,15 +4,53 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import JobListingComponent from "@/components/smoothui/job-listing-component";
 import { Search, ChevronDown } from "lucide-react";
+import { Badge2 } from "@/components/ui/badge2";
+import { ChevronDownIcon } from "@/components/ui/chevron-down";
 
-// Placeholder logo component
-const CompanyLogo = ({ name }) => (
-    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary border border-border">
-        <span className="text-sm font-semibold text-foreground">
-            {name.charAt(0).toUpperCase()}
-        </span>
-    </div>
-);
+// Company logo component using logo.dev
+const companyDomains = {
+    "EliseAI": "elise.ai",
+    "Chainguard": "chainguard.dev",
+    "Kaizen": "kaizen.io",
+    "Symbolica": "symbolica.ai",
+    "Imprint": "imprint.co",
+    "Firsthand": "firsthand.co",
+    "Clear Street": "clearstreet.io",
+    "Adaptive ML": "adaptiveml.ai",
+    "doInstruct": "doinstruct.com",
+    "Mistral": "mistral.ai",
+    "Monumental": "monumental.ai",
+    "Langchain": "langchain.com",
+    "Nuro": "nuro.ai",
+    "Anthropic": "anthropic.com",
+    "Stripe": "stripe.com",
+    "Figma": "figma.com",
+    "Ramp": "ramp.com",
+    "Vercel": "vercel.com",
+    "Linear": "linear.app",
+    "Retool": "retool.com",
+};
+
+const CompanyLogo = ({ name }) => {
+    const domain = companyDomains[name] || `${name.toLowerCase().replace(/\s+/g, '')}.com`;
+
+    return (
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white border border-border overflow-hidden p-1">
+            <img
+                src={`https://img.logo.dev/${domain}?token=live_6a1a28fd-6420-4492-aeb0-b297461d9de2`}
+                alt={`${name} logo`}
+                className="h-full w-full object-contain"
+                onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                }}
+            />
+            <span className="text-sm font-semibold text-foreground hidden items-center justify-center h-full w-full">
+                {name.charAt(0).toUpperCase()}
+            </span>
+        </div>
+    );
+};
 
 // Realistic demo job data with comprehensive descriptions
 const sampleJobs = [
@@ -654,6 +692,13 @@ export default function JobsPage() {
             {/* Hero Header */}
             <section className="pt-16 pb-8">
                 <div className="mx-auto max-w-3xl px-6 text-center">
+                    {/* Badge */}
+                    <div className="flex justify-center mb-6">
+                        <Badge2 variant="animated-border">
+                            34 new jobs added today
+                        </Badge2>
+                    </div>
+
                     {/* Headline */}
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold font-outfit text-foreground">
                         Discover opportunities
@@ -693,13 +738,27 @@ export default function JobsPage() {
             <section className="py-4">
                 <div className="mx-auto max-w-3xl px-6">
                     {visibleJobs.length > 0 ? (
-                        <JobListingComponent
-                            jobs={visibleJobs}
-                            onJobClick={handleJobClick}
-                            className="!p-0"
-                        />
+                        <div className="border border-border rounded-xl bg-card overflow-hidden">
+                            <JobListingComponent
+                                jobs={visibleJobs}
+                                onJobClick={handleJobClick}
+                                className="!p-0"
+                            />
+                            {/* Load More Button - inside card container */}
+                            {hasMore && (
+                                <div className="border-t border-border">
+                                    <button
+                                        onClick={loadMore}
+                                        className="flex items-center justify-center gap-2 w-full py-2 text-md font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors font-outfit group"
+                                    >
+                                        Load More
+                                        <ChevronDownIcon />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     ) : (
-                        <div className="py-16 text-center">
+                        <div className="py-16 text-center border border-border rounded-xl">
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
                                 <Search className="h-8 w-8 text-muted-foreground" />
                             </div>
@@ -710,25 +769,12 @@ export default function JobsPage() {
                         </div>
                     )}
 
-                    {/* Load More Button */}
-                    {hasMore && (
-                        <div className="flex justify-center pt-8 pb-12">
-                            <button
-                                onClick={loadMore}
-                                className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors font-outfit group"
-                            >
-                                Load More
-                                <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-                            </button>
-                        </div>
-                    )}
-
                     {/* Results info */}
-                    {filteredJobs.length > 0 && (
+                    {/* {filteredJobs.length > 0 && (
                         <div className="text-center py-6 text-sm text-muted-foreground font-outfit">
                             Showing {visibleJobs.length} of {filteredJobs.length} opportunities
                         </div>
-                    )}
+                    )} */}
                 </div>
             </section>
         </div>

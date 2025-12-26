@@ -10,43 +10,57 @@ export default function Footer() {
         <footer className="bg-background">
             {/* Single PixelBackground for entire footer */}
             <PixelBackground className="relative w-full">
-                {/* Links Section - 3 Columns */}
-                <div className="mx-auto max-w-6xl px-6 pt-20 pb-8 md:pt-32 md:pb-12">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                {/* Links Section - 4 Columns */}
+                <div className="mx-auto max-w-6xl px-8 md:px-12 pt-12 pb-6 md:pt-16 md:pb-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                         {/* Column 1 - Contact/Social */}
-                        <div className="space-y-2 md:space-y-3">
-                            <Link href="mailto:hello@hirebase.co" className="block text-sm md:text-base text-white hover:text-foreground transition-colors">
-                                hello@hirebase.co
+                        <div className="space-y-1.5 md:space-y-2">
+                            <h4 className="font-outfit text-sm text-white/50 uppercase tracking-wider mb-2">Connect</h4>
+                            <Link href="mailto:hello@hirebase.xyz" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                hello@hirebase.xyz
                             </Link>
-                            <Link href="#" className="block text-sm md:text-base text-white hover:text-foreground transition-colors">
-                                X
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                X (Twitter)
                             </Link>
-                            <Link href="#" className="block text-sm md:text-base text-white hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
                                 LinkedIn
                             </Link>
                         </div>
 
-                        {/* Column 2 - Resources */}
-                        <div className="space-y-2 md:space-y-3">
-                            <Link href="/jobs" className="font-outfit block text-sm md:text-base text-white hover:text-foreground transition-colors">
-                                Browse Jobs
+                        {/* Column 2 - Browse */}
+                        <div className="space-y-1.5 md:space-y-2">
+                            <h4 className="font-outfit text-sm text-white/50 uppercase tracking-wider mb-2">Browse</h4>
+                            <Link href="/jobs" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                Jobs
                             </Link>
-                            <Link href="#" className="font-outfit block text-sm md:text-base text-white hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
                                 Companies
                             </Link>
-                            <Link href="#" className="font-outfit block text-sm md:text-base text-white hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
                                 Resources
                             </Link>
                         </div>
 
-                        {/* Column 3 - Locations */}
-                        <div className="space-y-2 md:space-y-3">
-                            <p className="font-outfit text-sm md:text-base text-white">
-                                Kerala, India
-                            </p>
-                            <p className="font-outfit text-sm md:text-base text-white">
-                                Remote Friendly
-                            </p>
+                        {/* Column 3 - Legal */}
+                        <div className="space-y-1.5 md:space-y-2">
+                            <h4 className="font-outfit text-sm text-white/50 uppercase tracking-wider mb-2">Legal</h4>
+                            <Link href="/terms" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                Terms of Service
+                            </Link>
+                            <Link href="/privacy" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                Privacy Policy
+                            </Link>
+                        </div>
+
+                        {/* Column 4 - Support */}
+                        <div className="space-y-1.5 md:space-y-2">
+                            <h4 className="font-outfit text-sm text-white/50 uppercase tracking-wider mb-2">Support</h4>
+                            <Link href="/contact" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                Contact Us
+                            </Link>
+                            <Link href="/faqs" className="font-outfit block text-base md:text-lg text-white/80 hover:text-white transition-colors">
+                                FAQs
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -66,7 +80,7 @@ export default function Footer() {
                 <div className="mx-auto max-w-6xl px-6">
                     <div className="flex items-center justify-center gap-2 py-4 text-xs md:text-sm text-white/70">
                         <span className="text-white">
-                            Crafted by{" "}
+                            Designed and engineered by{" "}
                             <a href="https://rahan.eu" target="_blank" rel="noopener">
                                 <UnderlineToBackground
                                     targetTextColor="#191919"

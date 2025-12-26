@@ -103,6 +103,18 @@ export default function JobListingComponent({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (activeItem) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activeItem]);
+
   return (
     <>
       <AnimatePresence>
@@ -112,6 +124,7 @@ export default function JobListingComponent({
             className="pointer-events-auto fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             onClick={() => setActiveItem(null)} />
         ) : null}
       </AnimatePresence>
@@ -119,39 +132,30 @@ export default function JobListingComponent({
         {activeItem ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <motion.div
-              className="flex h-fit w-[95%] max-w-2xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg"
-              layoutId={`workItem-${activeItem.company}`}
+              className="flex h-fit w-[95%] max-w-4xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg rounded-xl"
+              layoutId={`workItem-${activeItem.company}-${activeItem._index}`}
               ref={ref}
-              style={{ borderRadius: 12 }}>
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}>
               <div className="flex w-full items-center gap-4">
-                <motion.div layoutId={`workItemLogo-${activeItem.company}`}>
+                <motion.div layoutId={`workItemLogo-${activeItem.company}-${activeItem._index}`}>
                   {activeItem.logo}
                 </motion.div>
                 <div className="flex grow items-center justify-between">
-                  <div className="flex w-full flex-col gap-0.5">
-                    <div className="flex w-full flex-row justify-between gap-0.5">
-                      <motion.div
-                        className="font-medium text-foreground text-base"
-                        layoutId={`workItemCompany-${activeItem.company}`}>
-                        {activeItem.company}
-                      </motion.div>
-                    </div>
-                    <motion.p
-                      className="text-foreground font-medium text-sm"
-                      layoutId={`workItemTitle-${activeItem.company}`}>
-                      {activeItem.title}
-                    </motion.p>
+                  <div className="flex w-full flex-col gap-1">
                     <motion.div
-                      className="flex flex-row gap-2 text-muted-foreground text-xs mt-1"
-                      layoutId={`workItemExtras-${activeItem.company}`}>
-                      <span className="bg-secondary px-2 py-0.5 rounded">{activeItem.salary}</span>
-                      <span className="bg-secondary px-2 py-0.5 rounded">
-                        {activeItem.remote === "Yes" && `${activeItem.location} · Remote`}
-                        {activeItem.remote === "No" && `${activeItem.location} · On-site`}
-                        {activeItem.remote === "Hybrid" && `${activeItem.location} · Hybrid`}
-                      </span>
-                      <span className="bg-secondary px-2 py-0.5 rounded">{activeItem.job_time}</span>
+                      className="font-medium text-foreground text-base"
+                      layoutId={`workItemCompany-${activeItem.company}-${activeItem._index}`}>
+                      {activeItem.title}
                     </motion.div>
+                    <motion.div
+                      className="text-muted-foreground text-sm"
+                      layoutId={`workItemTitle-${activeItem.company}-${activeItem._index}`}>
+                      {activeItem.company} · {activeItem.location} · {activeItem.remote === "Yes" ? "Remote" : activeItem.remote === "Hybrid" ? "Hybrid" : "On-site"}
+                    </motion.div>
+                    <div className="flex flex-row flex-wrap gap-2 text-muted-foreground text-xs mt-1">
+                      <span className="bg-secondary px-2 py-0.5 rounded">{activeItem.salary}</span>
+                      <span className="bg-secondary px-2 py-0.5 rounded">{activeItem.job_time}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -167,43 +171,33 @@ export default function JobListingComponent({
           </div>
         ) : null}
       </AnimatePresence>
-      <div className={`relative flex items-start p-6 ${className || ""}`}>
-        <div className="relative flex w-full flex-col items-center gap-4 px-2">
-          {jobs.map((role) => (
+      <div className={`relative flex items-start ${className || ""}`}>
+        <div className="relative flex w-full flex-col divide-y divide-border">
+          {jobs.map((role, index) => (
             <motion.div
-              className="group flex w-full cursor-pointer flex-row items-center gap-4 border bg-background p-2 shadow-xs md:p-4"
-              key={role.company}
-              layoutId={`workItem-${role.company}`}
+              className="group flex w-full cursor-pointer flex-row items-center gap-4 bg-background p-4 hover:bg-secondary/50 transition-colors"
+              key={`${role.company}-${index}`}
+              layoutId={`workItem-${role.company}-${index}`}
               onClick={() => {
-                setActiveItem(role);
+                setActiveItem({ ...role, _index: index });
                 if (onJobClick) {
                   onJobClick(role);
                 }
               }}
-              style={{ borderRadius: 8 }}>
-              <motion.div layoutId={`workItemLogo-${role.company}`}>
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}>
+              <motion.div layoutId={`workItemLogo-${role.company}-${index}`}>
                 {role.logo}
               </motion.div>
               <div className="flex w-full flex-col items-start justify-between gap-0.5">
                 <motion.div
-                  className="font-medium text-foreground"
-                  layoutId={`workItemCompany-${role.company}`}>
-                  {role.company}
+                  className="font-medium text-foreground text-sm"
+                  layoutId={`workItemCompany-${role.company}-${index}`}>
+                  {role.title}
                 </motion.div>
                 <motion.div
                   className="text-muted-foreground text-xs"
-                  layoutId={`workItemTitle-${role.company}`}>
-                  {role.title} / {role.salary}
-                </motion.div>
-
-                <motion.div
-                  className="flex flex-row gap-2 text-muted-foreground text-xs"
-                  layoutId={`workItemExtras-${role.company}`}>
-                  {role.remote === "Yes" && ` ${role.location} `}
-                  {role.remote === "No" && ` ${role.location} `}
-                  {role.remote === "Hybrid" &&
-                    ` ${role.remote} / ${role.location} `}
-                  | {role.job_time}
+                  layoutId={`workItemTitle-${role.company}-${index}`}>
+                  {role.company} · {role.location} · {role.remote === "Yes" ? "Remote" : role.remote === "Hybrid" ? "Hybrid" : "On-site"}
                 </motion.div>
               </div>
             </motion.div>
