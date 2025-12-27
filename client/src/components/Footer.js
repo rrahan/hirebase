@@ -78,7 +78,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-foreground/20" />
                 <div className="mx-auto max-w-6xl px-6">
-                    <div className="selection:bg-[#149F65] selection:text-white flex items-center justify-center gap-2 py-4 text-xs md:text-sm text-foreground/70">
+                    <div className=" font-outfit selection:bg-[#149F65] selection:text-white flex items-center justify-center gap-2 py-4 text-xs md:text-sm text-foreground/70">
                         <span className="text-foreground">
                             Designed and engineered by{" "}
                             <a href="https://rahan.eu" target="_blank" rel="noopener">
@@ -93,7 +93,7 @@ export default function Footer() {
                         <span className="text-foreground">•</span>
                         <span className="hidden md:inline text-foreground">Building the future of hiring</span>
                         <span className="hidden md:inline text-foreground">•</span>
-                        <span className="text-foreground">© 2026, hirebase</span>
+                        <span className="text-foreground">© 2026 hirebase</span>
                     </div>
                 </div>
             </PixelBackground>
