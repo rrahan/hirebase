@@ -693,7 +693,7 @@ export default function JobsPage() {
             <section className="pt-16 pb-8">
                 <div className="mx-auto max-w-3xl px-6 text-center">
                     {/* Badge */}
-                    <div className="selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
+                    <div className=" font-geist selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
                         <Badge2 variant="animated-border">
                             34 new jobs added today
                         </Badge2>

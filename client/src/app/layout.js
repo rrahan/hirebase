@@ -1,5 +1,6 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Databuddy } from "@databuddy/sdk/react";
 
 
 export const metadata = {
@@ -72,6 +73,12 @@ export default function RootLayout({ children }) {
         >
           {children}
         </ThemeProvider>
+        <Databuddy
+          clientId="3782299e-9575-410f-847b-3a5ebf62ccb7"
+          trackHashChanges={true}
+          trackOutgoingLinks={true}
+          trackInteractions={true}
+        />
       </body>
     </html>
   );
