@@ -1,6 +1,15 @@
 import Header from "@/components/Header";
 import UnderlineToBackground from "@/components/fancy/text/underline-to-background";
 
+export const metadata = {
+    title: "Contact Us",
+    description: "Get in touch with Hirebase for job listing inquiries, partnerships, or support. We're here to help you find tech opportunities in Kerala.",
+    openGraph: {
+        title: "Contact Hirebase",
+        description: "Reach out to our team for questions about tech jobs in Kerala.",
+    },
+};
+
 // Simple footer for contact page
 const SimpleFooter = () => (
     <footer className="border-t border-border bg-background font-outfit py-1">

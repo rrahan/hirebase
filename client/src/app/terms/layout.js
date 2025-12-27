@@ -1,6 +1,15 @@
 import Header from "@/components/Header";
 import UnderlineToBackground from "@/components/fancy/text/underline-to-background";
 
+export const metadata = {
+    title: "Terms of Service",
+    description: "Simple, fair terms for using Hirebase job search platform. No legal jargon, just clarity.",
+    openGraph: {
+        title: "Terms of Service | Hirebase",
+        description: "Our terms for using Hirebase.",
+    },
+};
+
 // Simple footer for terms page
 const SimpleFooter = () => (
     <footer className="border-t border-border bg-background font-outfit py-1">

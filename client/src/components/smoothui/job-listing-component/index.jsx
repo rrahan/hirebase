@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
@@ -131,7 +131,7 @@ export default function JobListingComponent({
         {activeItem ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <motion.div
-              className="flex h-fit w-[95%] max-w-4xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg"
+              className="flex h-fit w-[95%] max-w-4xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg font-geist"
               layoutId={`workItem-${activeItem.company}-${activeItem._index}`}
               ref={ref}
               style={{ borderRadius: 12 }}
@@ -175,7 +175,7 @@ export default function JobListingComponent({
         <div className="relative flex w-full flex-col divide-y divide-border">
           {jobs.map((role, index) => (
             <motion.div
-              className="group flex w-full cursor-pointer flex-row items-center gap-4 bg-background p-4 hover:bg-secondary/50 transition-colors"
+              className="group flex w-full cursor-pointer flex-row items-center gap-4 bg-background p-4 hover:bg-secondary/50 transition-colors font-geist"
               key={`${role.company}-${index}`}
               layoutId={`workItem-${role.company}-${index}`}
               onClick={() => {

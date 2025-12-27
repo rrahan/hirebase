@@ -1,5 +1,29 @@
 import UnderlineToBackground from "@/components/fancy/text/underline-to-background"
 
+export const metadata = {
+    title: "Tech Jobs in Kerala | Technopark & Infopark Vacancies",
+    description: "Find developer, designer, and startup jobs in Kerala. Real-time listings from Technopark, Infopark, and Kerala startups. No middlemen or expired posts. Direct feed from company career portals.",
+    keywords: [
+        "Technopark jobs",
+        "Infopark Kochi vacancies",
+        "Tech jobs in Kochi",
+        "Software engineer jobs Kerala",
+        "Frontend developer Kochi",
+        "Python developer Kerala",
+        "UI/UX designer Kerala",
+        "Startup jobs Kerala",
+        "Remote jobs for Keralites",
+        "Fresher tech jobs Kerala",
+    ],
+    openGraph: {
+        title: "Tech Jobs in Kerala | Technopark & Infopark",
+        description: "Developer and design roles from Kerala startups. Direct openings from official company portals.",
+    },
+    twitter: {
+        title: "Tech Jobs in Kerala | Hirebase",
+        description: "Real-time tech job listings from Technopark, Infopark, and Kerala startups.",
+    },
+};
 
 const SimpleFooter = () => (
     <footer className="border-t border-border bg-background font-outfit py-1">

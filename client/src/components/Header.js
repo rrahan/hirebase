@@ -23,7 +23,7 @@ export default function Header() {
                             d="M81.01,0H27.75C12.43,0,0,12.42,0,27.75v48.4c0,15.33,12.43,27.75,27.75,27.75h53.26c15.33,0,27.75-12.42,27.75-27.75V27.75c0-15.33-12.42-27.75-27.75-27.75ZM71.92,70.48c-23.66,22.24-50.1,32.54-59.07,23-8.96-9.54,2.95-35.3,26.6-57.54C63.11,13.7,89.55,3.4,98.51,12.94c8.97,9.53-2.94,35.29-26.59,57.53Z"
                         />
                     </svg>
-                    <span className="text-4xl text-foreground font-semibold font-outfit tracking-tight">hirebase</span>
+                    <span className="select-none text-4xl text-foreground font-semibold font-outfit tracking-tight">hirebase</span>
                 </Link>
 
                 {/* CTA Buttons */}
