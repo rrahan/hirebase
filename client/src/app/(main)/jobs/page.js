@@ -693,14 +693,14 @@ export default function JobsPage() {
             <section className="pt-16 pb-8">
                 <div className="mx-auto max-w-3xl px-6 text-center">
                     {/* Badge */}
-                    <div className="flex justify-center mb-6">
+                    <div className="selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
                         <Badge2 variant="animated-border">
                             34 new jobs added today
                         </Badge2>
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold font-outfit text-foreground">
+                    <h1 className="selection:bg-[#149F65] selection:text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold font-outfit text-foreground">
                         Discover opportunities
                         that match your vision.
                     </h1>
@@ -738,7 +738,7 @@ export default function JobsPage() {
             <section className="py-4">
                 <div className="mx-auto max-w-3xl px-6">
                     {visibleJobs.length > 0 ? (
-                        <div className="border border-border rounded-xl bg-card overflow-hidden">
+                        <div className="selection:bg-[#149F65] selection:text-white border border-border rounded-xl bg-card overflow-hidden">
                             <JobListingComponent
                                 jobs={visibleJobs}
                                 onJobClick={handleJobClick}
@@ -758,7 +758,7 @@ export default function JobsPage() {
                             )}
                         </div>
                     ) : (
-                        <div className="py-16 text-center border border-border rounded-xl">
+                        <div className="selection:bg-[#149F65] selection:text-white py-16 text-center border border-border rounded-xl">
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
                                 <Search className="h-8 w-8 text-muted-foreground" />
                             </div>

@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { ArrowRightIcon } from "@/components/ui/arrow-right";
 import { RaisedButton } from "./ui/raised-button";
+import Link from "next/link";
 
 export function CallToAction() {
     return (
         <div
-            className="relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-4 border-y px-4 py-8 dark:bg-[radial-gradient(35%_80%_at_25%_0%,--theme(--color-foreground/.08),transparent)]">
+            className="selection:bg-[#149F65] selection:text-white relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-4 border-y px-4 py-8 dark:bg-[radial-gradient(35%_80%_at_25%_0%,--theme(--color-foreground/.08),transparent)]">
             <PlusIcon
                 className="absolute top-[-12.5px] left-[-11.5px] z-1 size-6"
                 strokeWidth={1} />
@@ -31,9 +32,11 @@ export function CallToAction() {
             </p>
             <div className="flex items-center justify-center gap-2">
                 {/* <Button variant="outline">Contact Sales</Button> */}
-                <RaisedButton color="#107A4D" className={'cursor-pointer'}>
-                    Browse All Jobs <ArrowRightIcon />
-                </RaisedButton>
+                <Link href="/jobs">
+                    <RaisedButton color="#107A4D" className={'cursor-pointer select-none'}>
+                        Browse All Jobs <ArrowRightIcon />
+                    </RaisedButton>
+                </Link>
             </div>
         </div>
     );

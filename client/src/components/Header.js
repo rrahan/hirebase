@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { RaisedButton } from "@/components/ui/raised-button";
+import {
+    Tooltip,
+    TooltipTrigger,
+    TooltipPopup,
+    TooltipProvider,
+} from "@/components/ui/tooltip";
 
 
 export default function Header() {
@@ -23,7 +29,14 @@ export default function Header() {
                 {/* CTA Buttons */}
                 <div className="flex items-center gap-3 select-none font-outfit">
                     <ThemeToggle />
-                    <RaisedButton color="#107A4D">Reach Out</RaisedButton>
+                    <TooltipProvider delay={100} closeDelay={100}>
+                        <Tooltip>
+                            <TooltipTrigger render={<RaisedButton color="#107A4D" />}>
+                                Public Alpha v1.0
+                            </TooltipTrigger>
+                            <TooltipPopup className={'font-outfit select-none'}>We're in public alpha. Expect bugs and improvements.</TooltipPopup>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </div>
         </header>

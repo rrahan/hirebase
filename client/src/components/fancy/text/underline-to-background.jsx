@@ -16,7 +16,6 @@ const UnderlineToBackground = ({
   // Default to 1% of font size
   underlinePaddingRatio = 0.01,
 
-  targetTextColor = "#fef",
   ...props
 }) => {
   const textRef = useRef(null)
@@ -42,7 +41,7 @@ const UnderlineToBackground = ({
     return () => window.removeEventListener("resize", updateUnderlineStyles);
   }, [underlineHeightRatio, underlinePaddingRatio])
 
-  // Animation variants for the underline background
+  // Animation variants for the underline background - expands from bottom to top
   const underlineVariants = {
     initial: {
       height: "var(--underline-height)",
@@ -53,20 +52,9 @@ const UnderlineToBackground = ({
     },
   }
 
-  // Animation variants for the text color
-  const textVariants = {
-    initial: {
-      color: "currentColor",
-    },
-    target: {
-      color: targetTextColor,
-      transition: transition,
-    },
-  }
-
   return (
     <MotionComponent
-      className={cn("relative inline-block cursor-pointer", className)}
+      className={cn("relative inline-block cursor-pointer group", className)}
       whileHover="target"
       ref={textRef}
       {...props}>
@@ -74,13 +62,13 @@ const UnderlineToBackground = ({
         className="absolute bg-current w-full"
         style={{
           height: "var(--underline-height)",
-          bottom: "calc(-1 * var(--underline-padding))",
+          bottom: 0,
         }}
         variants={underlineVariants}
         aria-hidden="true" />
-      <motion.span variants={textVariants} className="text-current relative">
+      <span className="relative transition-colors duration-200 group-hover:text-background">
         {children}
-      </motion.span>
+      </span>
     </MotionComponent>
   );
 }

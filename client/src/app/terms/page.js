@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function TermsPage() {
     return (
-        <div className="w-full font-outfit overflow-x-hidden">
+        <div className="selection:bg-[#149F65] selection:text-white w-full font-outfit overflow-x-hidden">
             <div className="mx-auto min-h-screen max-w-5xl lg:border-x">
                 {/* Header Section */}
                 <div className="px-4 pt-12 pb-8 border-b border-border">

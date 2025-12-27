@@ -124,7 +124,6 @@ export default function JobListingComponent({
             className="pointer-events-auto fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
             onClick={() => setActiveItem(null)} />
         ) : null}
       </AnimatePresence>
@@ -132,10 +131,11 @@ export default function JobListingComponent({
         {activeItem ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <motion.div
-              className="flex h-fit w-[95%] max-w-4xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg rounded-xl"
+              className="flex h-fit w-[95%] max-w-4xl cursor-pointer flex-col items-start gap-4 overflow-hidden border bg-background p-6 shadow-lg"
               layoutId={`workItem-${activeItem.company}-${activeItem._index}`}
               ref={ref}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}>
+              style={{ borderRadius: 12 }}
+              transition={{ type: "spring", stiffness: 500, damping: 35 }}>
               <div className="flex w-full items-center gap-4">
                 <motion.div layoutId={`workItemLogo-${activeItem.company}-${activeItem._index}`}>
                   {activeItem.logo}
@@ -184,7 +184,8 @@ export default function JobListingComponent({
                   onJobClick(role);
                 }
               }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}>
+              style={{ borderRadius: 8 }}
+              transition={{ type: "spring", stiffness: 500, damping: 35 }}>
               <motion.div layoutId={`workItemLogo-${role.company}-${index}`}>
                 {role.logo}
               </motion.div>

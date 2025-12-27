@@ -32,15 +32,15 @@ export default function Home() {
                   </motion.span>
                   <TextRotate
                     texts={[
-                      "strategists",
-                      "talents",
-                      "leaders",
-                      "builders",
-                      "experts",
                       "engineers",
                       "visionaries",
                       "designers",
                       "thinkers",
+                      "strategists",
+                      "talents",
+                      "leaders",
+                      "builders",
+                      "experts"
                     ]}
                     mainClassName="font-outfit selection:bg-[#149F65] text-foreground px-2 sm:px-2 md:px-3 bg-[#149F65] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
                     staggerFrom={"last"}
@@ -117,7 +117,7 @@ export default function Home() {
         <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-b border-border" />
       </section>
 
-      <section className="min-h-screen place-content-center font-outfit">
+      <section className="selection:bg-[#149F65] selection:text-white min-h-screen place-content-center font-outfit">
         <FeatureSection />
       </section>
 
@@ -169,15 +169,15 @@ export default function Home() {
           </div>
         </div>
         <div className="mx-auto max-w-2xl px-6 relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-12 font-outfit">
+          <h2 className="selection:bg-[#149F65] text-3xl md:text-4xl font-bold tracking-tight mb-12 font-outfit">
             Why hirebase?
           </h2>
 
-          <div className="text-lg md:text-xl leading-relaxed space-y-6 text-muted-foreground font-outfit">
+          <div className="selection:bg-[#149F65] selection:text-white text-lg md:text-xl leading-relaxed space-y-6 text-muted-foreground font-outfit">
             <p>
               Finding your next opportunity shouldn't feel like a full-time job.{" "}
               <TextHighlighter
-                className="rounded-[0.3em] px-1 text-white"
+                className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
@@ -189,7 +189,7 @@ export default function Home() {
 
             <p>
               <TextHighlighter
-                className="rounded-[0.3em] px-1 text-white"
+                className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
@@ -202,7 +202,7 @@ export default function Home() {
             <p>
               Apply to multiple positions with a single click.{" "}
               <TextHighlighter
-                className="rounded-[0.3em] px-1 text-white"
+                className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
@@ -215,7 +215,7 @@ export default function Home() {
             <p>
               Connect directly with{" "}
               <TextHighlighter
-                className="rounded-[0.3em] px-1 text-white"
+                className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
@@ -228,7 +228,7 @@ export default function Home() {
             <p>
               Every listing on hirebase is{" "}
               <TextHighlighter
-                className="rounded-[0.3em] px-1 text-white"
+                className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.5 }}

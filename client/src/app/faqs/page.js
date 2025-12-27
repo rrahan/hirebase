@@ -5,7 +5,7 @@ import { LogoCloud } from "@/components/logo-cloud";
 
 export default function FaqsPage() {
     return (
-        <div className="w-full font-outfit overflow-x-hidden">
+        <div className="selection:bg-[#149F65] selection:text-white w-full font-outfit overflow-x-hidden">
             <FaqsSection />
             <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-b border-border" />
             <h2 className="mt-4 mb-3 text-center font-medium text-foreground text-xl tracking-tight md:text-2xl">

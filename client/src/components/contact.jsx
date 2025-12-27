@@ -2,9 +2,9 @@
 import { cn } from "@/lib/utils";
 import { Mail, MapPin, Phone } from "lucide-react";
 
-const APP_EMAIL = "hi@hirebase.xyz";
-const APP_PHONE = "+92 300 1234567";
-const APP_PHONE_2 = "+92 321 9876543";
+const APP_EMAIL = "hello@hirebase.xyz";
+const APP_PHONE = "+1 (300) 123-4567";
+const APP_PHONE_2 = "+1 (321) 987-6543";
 
 export function Contact() {
 	const socialLinks = [
@@ -42,7 +42,7 @@ export function Contact() {
 				</Box>
 				<Box description="Drop by our office for a chat." icon={MapPin} title="Office">
 					<span className="font-medium font-mono text-sm tracking-wide">
-						Office # 100, 101 Second Floor Kohinoor 1, Faisalabad, Pakistan
+						Dell Diamond, 3400 E Palm Valley Blvd, TX, 78682
 					</span>
 				</Box>
 				<Box
