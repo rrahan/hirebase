@@ -64,13 +64,13 @@ const faqs = [
 		id: "item-1",
 		title: "Where do these job listings come from?",
 		content:
-			"We index official company career portals directly. No third-party aggregators or middlemen—just direct links to the source.",
+			"Every listing on hirebase is sourced directly from verified companies. No third-party aggregators or middlemen, just legitimate opportunities.",
 	},
 	{
 		id: "item-2",
 		title: "How do you prevent \"ghost jobs\"?",
 		content:
-			"Our engine re-verifies every listing every 3 hours. If a company removes a post, we purge it from our index immediately.",
+			"Our engine regularly re-verifies every listing. If a company removes a job post, we purge it from our index immediately.",
 	},
 	{
 		id: "item-3",
@@ -92,9 +92,9 @@ const faqs = [
 	},
 	{
 		id: "item-6",
-		title: "Can I suggest a company to track?",
+		title: "Is hirebase free to use?",
 		content:
-			"Yes. Use the Reach Out form. We review all community suggestions for technical relevance before indexing them.",
+			"Yes, completely free for job seekers. We believe access to quality job listings shouldn't come with a price tag.",
 	},
 	{
 		id: "item-7",

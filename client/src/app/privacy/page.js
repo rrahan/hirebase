@@ -56,9 +56,8 @@ export default function PrivacyPage() {
 
                     <PolicySection title="4. Third-Party Services">
                         <p className="text-muted-foreground">
-                            We use minimal third-party services. When you click on a job listing, you'll be directed
-                            to the company's official career page. We have no control over their privacy practices,
-                            so we encourage you to review their policies.
+                            We use minimal third-party services. Our platform may contain links to external company pages.
+                            We have no control over their privacy practices, so we encourage you to review their policies.
                         </p>
                     </PolicySection>
 

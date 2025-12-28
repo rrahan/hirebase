@@ -15,53 +15,53 @@ export default function Footer() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                         {/* Column 1 - Contact/Social */}
                         <div className="space-y-1.5 md:space-y-2">
-                            <h4 className="font-outfit text-sm text-foreground/50 uppercase tracking-wider mb-2">Connect</h4>
-                            <Link href="mailto:hello@hirebase.xyz" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <h4 className="font-outfit text-base text-foreground/50 uppercase tracking-wider mb-3">Connect</h4>
+                            <Link href="mailto:hello@hirebase.xyz" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 hello@hirebase.xyz
                             </Link>
-                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 X (Twitter)
                             </Link>
-                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground hover:text-foreground/80 transition-colors">
                                 LinkedIn
                             </Link>
                         </div>
 
                         {/* Column 2 - Browse */}
                         <div className="space-y-1.5 md:space-y-2">
-                            <h4 className="font-outfit text-sm text-foreground/50 uppercase tracking-wider mb-2">Browse</h4>
-                            <Link href="/jobs" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <h4 className="font-outfit text-base text-foreground/50 uppercase tracking-wider mb-3">Browse</h4>
+                            <Link href="/jobs" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 Jobs
                             </Link>
-                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground hover:text-foreground/80 transition-colors">
                                 Companies
                             </Link>
-                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="#" className="font-outfit block text-base md:text-lg text-foreground hover:text-foreground/80 transition-colors">
                                 Resources
                             </Link>
                         </div>
 
                         {/* Column 3 - Legal */}
                         <div className="space-y-1.5 md:space-y-2">
-                            <h4 className="font-outfit text-sm text-foreground/50 uppercase tracking-wider mb-2">Legal</h4>
-                            <Link href="/terms" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <h4 className="font-outfit text-base text-foreground/50 uppercase tracking-wider mb-3">Legal</h4>
+                            <Link href="/terms" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 Terms of Service
                             </Link>
-                            <Link href="/privacy" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="/privacy" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 Privacy Policy
                             </Link>
                         </div>
 
                         {/* Column 4 - Support */}
                         <div className="space-y-1.5 md:space-y-2">
-                            <h4 className="font-outfit text-sm text-foreground/50 uppercase tracking-wider mb-2">Support</h4>
-                            <Link href="/contact" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <h4 className="font-outfit text-base text-foreground/50 uppercase tracking-wider mb-3">Support</h4>
+                            <Link href="/contact" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 Contact Us
                             </Link>
-                            <Link href="/faqs" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="/faqs" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 FAQs
                             </Link>
-                            <Link href="https://status.hirebase.xyz/" target="_blank" rel="noopener" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="https://status.hirebase.xyz/" target="_blank" rel="noopener" className="font-outfit block text-lg md:text-xl text-foreground/80 hover:text-foreground transition-colors">
                                 Status
                             </Link>
                         </div>
@@ -83,7 +83,7 @@ export default function Footer() {
                 <div className="mx-auto max-w-6xl px-6">
                     <div className=" font-outfit selection:bg-[#149F65] selection:text-white flex items-center justify-center gap-2 py-4 text-xs md:text-sm text-foreground/70">
                         <span className="text-foreground">
-                            Designed and engineered by{" "}
+                            Engineered by{" "}
                             <a href="https://rahan.eu" target="_blank" rel="noopener">
                                 <UnderlineToBackground
                                     underlineHeightRatio={0}

@@ -16,7 +16,7 @@ export default function TermsPage() {
                             Simple, fair terms for using hirebase. No legal jargon, just clarity.
                         </p>
                         <p className="text-muted-foreground text-sm">
-                            Last updated: December 26, 2024
+                            Last updated: December 26, 2025
                         </p>
                     </div>
                 </div>
@@ -36,10 +36,10 @@ export default function TermsPage() {
                             hirebase provides:
                         </p>
                         <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                            <li><span className="text-foreground">Job aggregation</span> — curated listings from verified company career pages</li>
+                            <li><span className="text-foreground">Job aggregation</span> — curated job listings from verified companies</li>
                             <li><span className="text-foreground">Search functionality</span> — tools to filter and discover opportunities</li>
                             <li><span className="text-foreground">AI-powered insights</span> — distilled job summaries for quick evaluation</li>
-                            <li><span className="text-foreground">Direct links</span> — connections to official application portals</li>
+                            <li><span className="text-foreground">Real-time updates</span> — regularly refreshed listings to ensure accuracy</li>
                         </ul>
                     </TermsSection>
 
@@ -67,9 +67,8 @@ export default function TermsPage() {
 
                     <TermsSection title="5. Third-Party Links">
                         <p className="text-muted-foreground">
-                            Our service contains links to external company career pages. We are not responsible
-                            for the content, accuracy, or practices of these third-party sites. Clicking on job
-                            listings will direct you to the company's official page where their own terms apply.
+                            Our service may contain links to external company pages. We are not responsible
+                            for the content, accuracy, or practices of these third-party sites.
                         </p>
                     </TermsSection>
 
@@ -77,7 +76,7 @@ export default function TermsPage() {
                         <p className="text-muted-foreground">
                             hirebase is provided "as is" without warranties of any kind. While we strive to
                             maintain accurate and up-to-date listings, we cannot guarantee that all job postings
-                            are current, accurate, or still available. We re-verify listings every 3 hours but
+                            are current, accurate, or still available. We regularly re-verify listings but
                             companies may change their postings at any time.
                         </p>
                     </TermsSection>

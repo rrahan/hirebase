@@ -40,28 +40,19 @@ export function Contact() {
 						{APP_EMAIL}
 					</a>
 				</Box>
-				<Box description="Drop by our office for a chat." icon={MapPin} title="Office">
-					<span className="font-medium font-mono text-sm tracking-wide">
-						Dell Diamond, 3400 E Palm Valley Blvd, TX, 78682
+				<Box description="Physical office coming soon." icon={MapPin} title="Office">
+					<span className="font-medium font-mono text-sm tracking-wide text-muted-foreground">
+						Coming soon
 					</span>
 				</Box>
 				<Box
 					className="border-b-0 md:border-r-0"
-					description="We're available Mon-Fri, 9am-5pm."
+					description="Phone support coming soon."
 					icon={Phone}
 					title="Phone">
-					<div>
-						<a
-							className="block font-medium font-mono text-sm tracking-wide hover:underline"
-							href={`tel:${APP_PHONE}`}>
-							{APP_PHONE}
-						</a>
-						<a
-							className="block font-medium font-mono text-sm tracking-wide hover:underline"
-							href={`tel:${APP_PHONE_2}`}>
-							{APP_PHONE_2}
-						</a>
-					</div>
+					<span className="font-medium font-mono text-sm tracking-wide text-muted-foreground">
+						Coming soon
+					</span>
 				</Box>
 			</div>
 			<BorderSeparator />

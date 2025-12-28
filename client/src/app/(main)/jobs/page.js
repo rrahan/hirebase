@@ -707,8 +707,7 @@ export default function JobsPage() {
 
                     {/* Subheadline */}
                     <p className="selection:bg-[#149F65] selection:text-white mt-5 font-outfit text-base text-muted-foreground md:text-lg max-w-xl mx-auto">
-                        Find <span className="text-foreground font-medium">remote</span> and{" "}
-                        <span className="text-foreground font-medium">onsite</span> jobs at today's most ambitious startups.
+                        Explore verified opportunities at companies that are actually hiring.
                         <br className="hidden sm:block" />
                         Updated daily.
                     </p>

@@ -14,6 +14,8 @@ import { ShieldCheckIcon } from "./ui/shield-check";
 import { LockIcon } from "./ui/lock";
 import { SlidersHorizontalIcon } from "./ui/sliders-horizontal";
 import { BotIcon } from "./ui/bot";
+import { BanIcon } from "./ui/ban";
+import { CheckIcon } from "./ui/check";
 
 export function FeatureSection() {
 	return (
@@ -66,9 +68,9 @@ export function FeatureCard({
 
 const features = [
 	{
-		title: "Direct Access",
-		icon: ZapIcon,
-		description: "Applications go directly to the hiring manager's inbox.",
+		title: "Zero Noise",
+		icon: BanIcon,
+		description: "No spam, no irrelevant listings cluttering your search.",
 	},
 	{
 		title: "Verified",
@@ -81,9 +83,9 @@ const features = [
 		description: "Your profile is hidden from your current employer.",
 	},
 	{
-		title: "Salary Transparency",
-		icon: Pencil,
-		description: "Mandatory compensation ranges on every single listing.",
+		title: "Real-Time Updates",
+		icon: ZapIcon,
+		description: "Listings are continuously refreshed to ensure accuracy and relevance.",
 	},
 	{
 		title: "Technical Filters",
@@ -91,8 +93,8 @@ const features = [
 		description: "Filter by tech stack, burn rate, engineering culture, and equity.",
 	},
 	{
-		title: "No Al Slop",
-		icon: BotIcon,
-		description: "Humans write our job descriptions. Humans read your applications.",
+		title: "Completely Free",
+		icon: CheckIcon,
+		description: "No subscriptions, no premium tiers. Quality job search for everyone.",
 	},
 ];

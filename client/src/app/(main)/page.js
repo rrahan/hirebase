@@ -15,20 +15,20 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col">
+      <section className="relative overflow-hidden md:min-h-[calc(100vh-64px)] flex flex-col">
 
         <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-12 flex-shrink-0">
           <div className="mx-auto max-w-3xl text-center">
             {/* Animated Text - Hero */}
-            <div className="flex items-center justify-center text-2xl sm:text-3xl md:text-5xl font-sans font-semibold">
+            <div className="flex items-center justify-center text-xl sm:text-2xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">
               <LayoutGroup>
-                <motion.div className="flex whitespace-pre" layout>
+                <motion.div className="flex flex-wrap md:flex-nowrap md:whitespace-nowrap justify-center items-center gap-x-1 sm:gap-x-2" layout>
                   <motion.span
                     className="selection:bg-[#149F65] pt-0.5 sm:pt-1 md:pt-2 text-foreground font-outfit"
                     layout
                     transition={{ type: "spring", damping: 30, stiffness: 400 }}
                   >
-                    Where{" "}
+                    Where
                   </motion.span>
                   <TextRotate
                     texts={[
@@ -42,7 +42,7 @@ export default function Home() {
                       "builders",
                       "experts"
                     ]}
-                    mainClassName="font-outfit selection:bg-[#149F65] text-foreground px-2 sm:px-2 md:px-3 bg-[#149F65] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                    mainClassName="font-outfit selection:bg-[#149F65] text-foreground px-1.5 sm:px-2 md:px-3 bg-[#149F65] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-md sm:rounded-lg"
                     staggerFrom={"last"}
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
@@ -57,7 +57,7 @@ export default function Home() {
                     layout
                     transition={{ type: "spring", damping: 30, stiffness: 400 }}
                   >
-                    {" "}find their next move.
+                    find their next move.
                   </motion.span>
                 </motion.div>
               </LayoutGroup>
@@ -79,9 +79,9 @@ export default function Home() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-4 md:mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/jobs">
-                <RaisedButton color="#107A4D" className="h-12 rounded-lg px-8 text-base select-none font-outfit">
+                <RaisedButton color="#107A4D" className="h-10 md:h-12 rounded-lg px-6 md:px-8 text-sm md:text-base select-none font-outfit">
                   Browse Jobs
                   {/* <ArrowRight className="ml-2 h-4 w-4" /> */}
                 </RaisedButton>
@@ -95,7 +95,7 @@ export default function Home() {
 
         {/* Hero Image - Full Width at Bottom */}
         <div
-          className="mt-auto w-full select-none"
+          className="mt-8 md:mt-auto w-full select-none"
           onContextMenu={(e) => e.preventDefault()}
         >
           <picture>
@@ -117,7 +117,7 @@ export default function Home() {
         <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-b border-border" />
       </section>
 
-      <section className="selection:bg-[#149F65] selection:text-white min-h-screen place-content-center font-outfit">
+      <section className="selection:bg-[#149F65] selection:text-white min-h-screen place-content-center font-outfit pt-8 md:pt-0">
         <FeatureSection />
       </section>
 
@@ -158,7 +158,7 @@ export default function Home() {
       {/* About Section */}
       <section className="py-24 relative overflow-x-hidden">
         {/* Grid Background Lines */}
-        <div className="absolute inset-0 w-screen left-1/2 right-1/2 -mx-[50vw] pointer-events-none">
+        <div className="hidden md:block absolute inset-0 w-screen left-1/2 right-1/2 -mx-[50vw] pointer-events-none">
           <div className="h-full max-w-6xl mx-auto grid grid-cols-4 lg:grid-cols-6">
             <div className="border-x border-border/50" />
             <div className="border-r border-border/50" />
