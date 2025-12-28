@@ -20,7 +20,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-12 flex-shrink-0">
           <div className="mx-auto max-w-3xl text-center">
             {/* Animated Text - Hero */}
-            <div className="flex items-center justify-center text-xl sm:text-2xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">
+            <div className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">
               <LayoutGroup>
                 <motion.div className="flex flex-wrap md:flex-nowrap md:whitespace-nowrap justify-center items-center gap-x-1 sm:gap-x-2" layout>
                   <motion.span

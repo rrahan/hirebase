@@ -16,7 +16,7 @@ export default function PrivacyPage() {
                             Your privacy matters. Here's how we handle your data with transparency and respect.
                         </p>
                         <p className="text-muted-foreground text-sm">
-                            Last updated: December 26, 2024
+                            Last updated: December 26, 2025
                         </p>
                     </div>
                 </div>

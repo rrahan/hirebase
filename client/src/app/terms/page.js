@@ -13,7 +13,7 @@ export default function TermsPage() {
                             Terms of Service
                         </h1>
                         <p className="text-muted-foreground">
-                            Simple, fair terms for using hirebase. No legal jargon, just clarity.
+                            Simple, fair terms for using hirebase. No legal jargon.
                         </p>
                         <p className="text-muted-foreground text-sm">
                             Last updated: December 26, 2025
