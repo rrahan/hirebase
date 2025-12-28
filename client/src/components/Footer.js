@@ -61,7 +61,7 @@ export default function Footer() {
                             <Link href="/faqs" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
                                 FAQs
                             </Link>
-                            <Link href="https://hirebase.openstatus.dev/" target="_blank" rel="noopener" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="https://status.hirebase.xyz/" target="_blank" rel="noopener" className="font-outfit block text-base md:text-lg text-foreground/80 hover:text-foreground transition-colors">
                                 Status
                             </Link>
                         </div>

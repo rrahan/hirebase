@@ -1,9 +1,14 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Databuddy } from "@databuddy/sdk/react";
+import MaintenancePage from "@/components/maintenance";
 
+// Maintenance mode toggle - set to true to enable maintenance mode
+// Can also be controlled via NEXT_PUBLIC_MAINTENANCE_MODE env variable
+const MAINTENANCE_MODE = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
 
 export const metadata = {
+  metadataBase: new URL('https://hirebase.xyz'),
   title: {
     default: "hirebase | Tech Jobs in Kerala | IT & Startup Jobs in Kerala",
     template: "%s | hirebase",
@@ -71,7 +76,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {MAINTENANCE_MODE ? <MaintenancePage /> : children}
         </ThemeProvider>
         <Databuddy
           clientId="3782299e-9575-410f-847b-3a5ebf62ccb7"
