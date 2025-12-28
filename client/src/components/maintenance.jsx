@@ -24,14 +24,21 @@ export default function MaintenancePage() {
             <div className="mx-auto h-full min-h-screen max-w-5xl relative z-10 flex flex-col">
                 {/* Main Content */}
                 <main className="flex-1 flex items-center justify-center px-6">
-                    <div className="max-w-2xl mx-auto text-center">
+                    <div className="max-w-2xl mx-auto text-center bg-background px-8 py-12 border border-border rounded-xs">
+                        {/* Logo */}
+                        <img
+                            src="/logo.svg"
+                            alt="hirebase logo"
+                            className="h-16 w-auto mx-auto mb-8 select-none pointer-events-none"
+                        />
+
                         {/* Title */}
-                        <h1 className="text-4xl md:text-5xl font-bold font-outfit text-foreground mb-4">
+                        <h1 className="selection:bg-[#149F65] selection:text-white text-4xl md:text-5xl font-bold font-outfit text-foreground mb-4">
                             We'll be back soon
                         </h1>
 
                         {/* Description */}
-                        <p className="text-lg md:text-xl text-muted-foreground font-outfit mb-8 leading-relaxed">
+                        <p className="selection:bg-[#149F65] selection:text-white text-lg md:text-xl text-muted-foreground font-outfit mb-8 leading-relaxed">
                             We're currently performing scheduled maintenance to improve your experience.
                             <br className="hidden sm:block" />
                             Thank you for your patience.

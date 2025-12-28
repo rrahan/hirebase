@@ -173,7 +173,7 @@ export default function Home() {
             Why hirebase?
           </h2>
 
-          <div className="selection:bg-[#149F65] selection:text-white text-lg md:text-xl leading-relaxed space-y-6 text-muted-foreground font-outfit">
+          <div className="selection:bg-[#149F65] selection:text-white text-lg md:text-xl leading-relaxed space-y-6 text-muted-foreground font-outfit text-justify">
             <p>
               Finding your next opportunity shouldn't feel like a full-time job.{" "}
               <TextHighlighter
@@ -184,58 +184,52 @@ export default function Home() {
               >
                 We've built hirebase to change that.
               </TextHighlighter>{" "}
-              Our platform brings together thousands of verified job listings from top companies, all in one place.
+
             </p>
 
             <p>
+              The internet is rotting with
               <TextHighlighter
                 className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
               >
-                Smart search and AI-powered recommendations
+                dead links and ghost jobs.
               </TextHighlighter>{" "}
-              help you discover roles that truly match your skills and aspirations. No more endless scrolling through irrelevant postings.
-            </p>
-
-            <p>
-              Apply to multiple positions with a single click.{" "}
+              Listings on major boards are already filled or were never real to begin with they exist solely to harvest your data, pad metrics, or simulate growth to investors.
               <TextHighlighter
                 className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
               >
-                Your profile does the work for you.
+                Traditional platforms are incentivized to keep you searching,
               </TextHighlighter>{" "}
-              Track every application in real-time and never lose sight of an opportunity.
+              selling your information to resume farms and bootcamps while allowing third-party headhunters to spam you with irrelevant roles.
             </p>
 
             <p>
-              Connect directly with{" "}
+
               <TextHighlighter
                 className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.3 }}
               >
-                recruiters and hiring managers
+                We're the bouncer at the door of your career.
               </TextHighlighter>{" "}
-              from startups to Fortune 500 enterprises. Build meaningful connections that accelerate your career.
-            </p>
-
-            <p>
-              Every listing on hirebase is{" "}
+              If we can't verify the hiring manager's identity, the role doesn't get posted. Every listing on hirebase is verified for quality and legitimacy.
+              Your job search should be focused on finding the right fit, not avoiding scams.{" "}
               <TextHighlighter
                 className="rounded-[0.3em] px-1 text-primary-foreground"
                 transition={{ type: "spring", duration: 1, delay: 0.4, bounce: 0 }}
                 highlightColor="#149F65"
                 useInViewOptions={{ once: true, initial: false, amount: 0.5 }}
               >
-                verified for quality and legitimacy.
+                That's the firewall we built.
               </TextHighlighter>{" "}
-              We believe your job search should be focused on finding the right fit—not avoiding scams.
+
             </p>
           </div>
         </div>
