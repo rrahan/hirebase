@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Databuddy } from "@databuddy/sdk/react";
 import MaintenancePage from "@/components/maintenance";
 import { ToastProvider } from "@/components/ui/toast";
+import { OrganizationSchema, WebSiteSchema } from "@/components/structured-data";
 
 // Maintenance mode toggle - set to true to enable maintenance mode
 // Can also be controlled via NEXT_PUBLIC_MAINTENANCE_MODE env variable
@@ -70,7 +71,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#149F65" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
       <body className="antialiased">
+        {/* Structured Data for SEO */}
+        <OrganizationSchema />
+        <WebSiteSchema />
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

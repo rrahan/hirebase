@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, Building2, Clock, Banknote, Flag, Bookmark, Share2, 
 import CompanyLogo from "@/components/company-logo";
 import { RaisedButton } from "@/components/ui/raised-button";
 import CopyButton from "@/components/copy-button";
+import { BreadcrumbSchema } from "@/components/structured-data";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -117,7 +118,7 @@ export async function generateMetadata({ params }) {
             url: `${process.env.NEXT_PUBLIC_SITE_URL}/job/${slug}`,
             images: [
                 {
-                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`,
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}&level=${encodeURIComponent(job.level || '')}&logo=${encodeURIComponent(job.logo || '')}`,
                     width: 1200,
                     height: 630,
                     alt: `${job.title} at ${job.company}`,
@@ -128,7 +129,7 @@ export async function generateMetadata({ params }) {
             card: "summary_large_image",
             title: `${job.title} at ${job.company}`,
             description,
-            images: [`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`],
+            images: [`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}&level=${encodeURIComponent(job.level || '')}&logo=${encodeURIComponent(job.logo || '')}`],
         },
     };
 }
@@ -180,6 +181,13 @@ export default async function JobPage({ params }) {
     return (
         <>
             <JobPostingSchema job={job} />
+            <BreadcrumbSchema
+                items={[
+                    { name: "Home", url: "https://hirebase.xyz" },
+                    { name: "Jobs", url: "https://hirebase.xyz/jobs" },
+                    { name: job.title, url: `https://hirebase.xyz/job/${slug}` },
+                ]}
+            />
 
             <div className="min-h-screen bg-background">
                 {/* Main content with vertical lines */}
