@@ -114,10 +114,10 @@ export async function generateMetadata({ params }) {
             title: `${job.title} at ${job.company}`,
             description,
             type: "website",
-            url: `/job/${slug}`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/job/${slug}`,
             images: [
                 {
-                    url: `/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`,
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`,
                     width: 1200,
                     height: 630,
                     alt: `${job.title} at ${job.company}`,
@@ -128,7 +128,7 @@ export async function generateMetadata({ params }) {
             card: "summary_large_image",
             title: `${job.title} at ${job.company}`,
             description,
-            images: [`/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`],
+            images: [`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}`],
         },
     };
 }

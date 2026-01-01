@@ -193,7 +193,7 @@ export default function JobsPage() {
     // Job listing skeleton component
     const JobListingSkeleton = () => (
         <div className="border border-border rounded-xl bg-card overflow-hidden">
-            {[...Array(5)].map((_, i) => (
+            {[...Array(10)].map((_, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 border-b border-border last:border-b-0">
                     <Skeleton className="h-10 w-10 rounded-lg flex-shrink-0" />
                     <div className="flex-1 space-y-2">

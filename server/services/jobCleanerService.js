@@ -152,11 +152,11 @@ async function matchCompanyByName(companyName) {
         // 3. Try reverse contains (our search contains DB company name)
         // This handles "Feathersoft Info Solutions" matching "Feathersoft"
         const allCompanies = await db.select().from(companies);
-        const lowerCleanedName = cleanedName.toLowerCase();
 
         for (const company of allCompanies) {
-            const companyNameLower = company.name.toLowerCase();
-            if (lowerCleanedName.includes(companyNameLower) || companyNameLower.includes(lowerCleanedName)) {
+            // Normalize DB company name the same way for comparison
+            const normalizedDbName = normalizeForMatching(cleanCompanyName(company.name));
+            if (cleanedName.includes(normalizedDbName) || normalizedDbName.includes(cleanedName)) {
                 console.log(`[JobCleaner] Reverse contains match: ${company.name} for "${cleanedName}"`);
                 return company;
             }
