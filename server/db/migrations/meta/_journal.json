@@ -8,6 +8,13 @@
       "when": 1765875391956,
       "tag": "0000_even_turbo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1767172444699,
+      "tag": "0001_hard_amphibian",
+      "breakpoints": true
     }
   ]
 }

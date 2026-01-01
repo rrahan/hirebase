@@ -49,11 +49,13 @@ const SimpleFooter = () => (
     </footer>
 );
 
-export default function JobsLayout({ children }) {
+export default function JobsLayout({ children, modal }) {
     return (
         <>
             {children}
+            {modal}
             <SimpleFooter />
         </>
     );
 }
+

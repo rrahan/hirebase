@@ -2,9 +2,14 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-const { v5: uuidv5 } = require('uuid');
 const { getRandomUserAgent } = require('../utils/generateUserAgent.js');
 const { cleanCompanyName } = require('../utils/companyCleaner.js');
+
+// Dynamic import for uuid (ES Module)
+let uuidv5;
+const uuidPromise = import('uuid').then(mod => {
+    uuidv5 = mod.v5;
+});
 
 const NAMESPACE = process.env.JOB_UUID_NAMESPACE;
 if (!NAMESPACE) {
@@ -143,6 +148,9 @@ async function fetchJobDescription(url) {
  */
 async function scrapeSmartCity() {
     try {
+        // Ensure uuid is loaded
+        await uuidPromise;
+
         console.log('Fetching job listings...');
         const jobs = await fetchJobLisitings();
         console.log(`Found ${jobs.length} jobs. Fetching details...`);

@@ -2,6 +2,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Databuddy } from "@databuddy/sdk/react";
 import MaintenancePage from "@/components/maintenance";
+import { ToastProvider } from "@/components/ui/toast";
 
 // Maintenance mode toggle - set to true to enable maintenance mode
 // Can also be controlled via NEXT_PUBLIC_MAINTENANCE_MODE env variable
@@ -76,7 +77,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {MAINTENANCE_MODE ? <MaintenancePage /> : children}
+          <ToastProvider position="bottom-right">
+            {MAINTENANCE_MODE ? <MaintenancePage /> : children}
+          </ToastProvider>
         </ThemeProvider>
         <Databuddy
           clientId="3782299e-9575-410f-847b-3a5ebf62ccb7"

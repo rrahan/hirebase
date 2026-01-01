@@ -32,10 +32,10 @@ export default function Header() {
                     <TooltipProvider delay={100} closeDelay={100}>
                         <Tooltip>
                             <TooltipTrigger render={<RaisedButton color="#107A4D" className="text-xs md:text-sm px-2 md:px-4 py-1 md:py-2" />}>
-                                <span className="hidden sm:inline">Public Alpha v1.0</span>
-                                <span className="sm:hidden">Alpha v1.0</span>
+                                <span className="hidden sm:inline">Public Beta v1.0</span>
+                                <span className="sm:hidden">Beta v1.0</span>
                             </TooltipTrigger>
-                            <TooltipPopup className={'font-outfit select-none'}>We're in public alpha. Expect bugs and improvements.</TooltipPopup>
+                            <TooltipPopup className={'font-outfit select-none'}>We're in beta. Expect bugs and improvements.</TooltipPopup>
                         </Tooltip>
                     </TooltipProvider>
                 </div>

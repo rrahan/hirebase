@@ -51,14 +51,27 @@ You will be given a raw job JSON object. You must return a valid JSON object wit
    - Fix grammatical errors and typos
    - Keep compensation/salary info under "benefits" if mentioned
    - Maintain professional, formal tone throughout
+   - **CRITICAL: DO NOT put "level" inside description array - it is a SEPARATE root-level field**
 
-7. level: Classify the job level by analyzing BOTH the job title AND description.
+7. level: **THIS IS A SEPARATE ROOT-LEVEL FIELD, NOT INSIDE DESCRIPTION.**
+   Classify the job level by analyzing BOTH the job title AND description.
     - Internship: 0 years (also includes "Trainee", "Intern", "Apprentice",  "Fresher")
     - Junior: 0-2 years (also "Entry Level", "Associate")
     - Mid-Level: 2-5 years
     - Senior: 5-10 years (also "Lead", "Principal", "Staff")
     - Manager: 10+ years (also "Director", "Head", "VP", "Chief")
     Priority: If years are explicitly mentioned, use them. Otherwise, infer from title keywords first, then description. Return one of: "Internship", "Junior", "Mid-Level", "Senior", "Manager".
+
+**EXAMPLE OUTPUT STRUCTURE:**
+{
+  "title": "Senior Software Engineer",
+  "company": "Acme Corp",
+  "date_posted": "2026-01-01",
+  "deadline": "2026-01-31",
+  "company_email": "careers@acme.com",
+  "description": [{"overview": "..."}, {"responsibilities": [...]}, {"requirements": [...]}],
+  "level": "Senior"
+}
 
 Input Raw Data:
 {{RAW_DATA}}        

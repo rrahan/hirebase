@@ -19,7 +19,7 @@ export default function Footer() {
                             <Link href="mailto:hello@hirebase.xyz" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 hello@hirebase.xyz
                             </Link>
-                            <Link href="#" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
+                            <Link href="https://x.com/hirebaseApp" target="_blank" rel="noopener" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 X (Twitter)
                             </Link>
                             <Link href="#" className="font-outfit block text-base md:text-lg text-foreground hover:text-foreground/80 transition-colors">
@@ -61,7 +61,7 @@ export default function Footer() {
                             <Link href="/faqs" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 FAQs
                             </Link>
-                            <Link href="https://status.hirebase.xyz/" target="_blank" rel="noopener" className="font-outfit block text-lg md:text-xl text-foreground/80 hover:text-foreground transition-colors">
+                            <Link href="https://status.hirebase.xyz/" target="_blank" rel="noopener" className="font-outfit block text-lg md:text-xl text-foreground hover:text-foreground/80 transition-colors">
                                 Status
                             </Link>
                         </div>
@@ -73,7 +73,7 @@ export default function Footer() {
 
                 {/* Large Brand Name Section - Now at bottom */}
                 <div className="h-[150px] sm:h-[200px] md:h-[280px] lg:h-[350px] flex items-center justify-center select-none pointer-events-none overflow-hidden">
-                    <h2 className="opacity-90 text-center text-foreground text-[99px] sm:text-12xl md:text-[200px] lg:text-[280px] font-outfit font-bold tracking-tight">
+                    <h2 className="opacity-90 text-center text-foreground text-[99px] sm:text-12xl md:text-[200px] lg:text-[400px] font-outfit font-bold tracking-tight">
                         hirebase
                     </h2>
                 </div>

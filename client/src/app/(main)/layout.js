@@ -6,7 +6,8 @@ import Footer from "@/components/Footer";
 
 export default function MainLayout({ children }) {
     const pathname = usePathname();
-    const isJobsPage = pathname?.startsWith("/jobs");
+    // Hide footer on /jobs and /job/{slug} pages (they have their own SimpleFooter)
+    const hideMainFooter = pathname?.startsWith("/jobs") || pathname?.startsWith("/job/");
 
     return (
         <>
@@ -14,7 +15,7 @@ export default function MainLayout({ children }) {
             <main className="min-h-screen">
                 {children}
             </main>
-            {!isJobsPage && <Footer />}
+            {!hideMainFooter && <Footer />}
         </>
     );
 }

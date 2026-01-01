@@ -180,7 +180,7 @@ export default function PixelBackground({
       const timeNow = performance.now();
       const timePassed = timeNow - timePreviousRef.current;
       // Throttle to 30fps instead of 60fps (half CPU usage, still looks smooth)
-      const timeInterval = 1000 / 30;
+      const timeInterval = 1000 / 60;
 
       if (timePassed < timeInterval) return;
       timePreviousRef.current = timeNow - (timePassed % timeInterval);

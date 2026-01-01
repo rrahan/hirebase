@@ -2,6 +2,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const Groq = require('groq-sdk');
+const { nanoid } = require('nanoid');
 const { db } = require('../config/db');
 const { rawjobs } = require('../schema/rawjobs');
 const { jobs } = require('../schema/jobs');
@@ -9,6 +10,55 @@ const { companies } = require('../schema/companies');
 const { eq, ilike, sql } = require('drizzle-orm');
 const { cleanCompanyName } = require('../utils/companyCleaner');
 const { SYSTEM_PROMPT } = require('../config/jobCleanerPrompt');
+
+/**
+ * Generates an SEO-friendly slug for a job posting
+ * Format: [role]-[company]-[location]-[id]
+ * @param {string} title - Job title/role
+ * @param {string} company - Company name
+ * @param {string} location - Job location
+ * @returns {string} SEO-friendly slug
+ */
+function generateSEOSlug(title, company, location) {
+    // Helper to slugify a string
+    const slugify = (str) => {
+        if (!str) return '';
+        return str
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-')      // Replace spaces with hyphens
+            .replace(/-+/g, '-')       // Replace multiple hyphens with single
+            .replace(/^-|-$/g, '');    // Remove leading/trailing hyphens
+    };
+
+    // Helper to truncate and keep SEO-friendly
+    const truncate = (str, maxLen) => {
+        if (!str || str.length <= maxLen) return str;
+        // Cut at word boundary
+        const truncated = str.substring(0, maxLen);
+        const lastHyphen = truncated.lastIndexOf('-');
+        return lastHyphen > 0 ? truncated.substring(0, lastHyphen) : truncated;
+    };
+
+    const roleSlug = truncate(slugify(title), 30);
+    const companySlug = truncate(slugify(company), 20);
+
+    // Extract city from location (first part before comma)
+    const city = location ? location.split(',')[0].trim() : '';
+    const locationSlug = truncate(slugify(city), 15);
+
+    // Generate short unique ID (8 characters)
+    const shortId = nanoid(8);
+
+    // Build slug parts (only include non-empty parts)
+    const parts = [roleSlug, companySlug, locationSlug].filter(Boolean);
+
+    // Always append the unique ID at the end
+    parts.push(shortId);
+
+    return parts.join('-');
+}
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
@@ -54,10 +104,12 @@ function normalizeForMatching(name) {
     if (!name) return '';
 
     return name
-        .replace(/\s+dot\s+/gi, '.')      // "Way Dot Com" -> "Way.Com"
+        .replace(/\s+dot\s+com\b/gi, '.com')  // "Way Dot Com" -> "Way.com"
+        .replace(/\s+dot\s+/gi, '.')      // "Way Dot Something" -> "Way.Something"
         .replace(/\s+dot$/gi, '.')         // trailing "dot"
         .replace(/^dot\s+/gi, '.')         // leading "dot"
-        .replace(/\s+/g, ' ')              // normalize spaces
+        .replace(/[-\s]+/g, '')            // remove all spaces AND hyphens for matching
+        .toLowerCase()                      // case insensitive
         .trim();
 }
 
@@ -177,18 +229,32 @@ async function processRawJobs() {
                     const companyLocation = matchedCompany?.location || null;
                     const companyWebsite = matchedCompany?.website || null;
 
+                    // Generate SEO-friendly slug
+                    const jobTitle = cleanedData.title || rawJob.title;
+                    const jobCompany = cleanedData.company || rawJob.company;
+                    const jobSlug = generateSEOSlug(jobTitle, jobCompany, companyLocation);
+
+                    // Handle description - ensure proper JSON stringification
+                    let descriptionToSave = cleanedData.description;
+                    if (descriptionToSave && typeof descriptionToSave !== 'string') {
+                        // If it's an object/array, stringify it once
+                        descriptionToSave = JSON.stringify(descriptionToSave);
+                    }
+
                     await db.insert(jobs).values({
                         id: rawJob.job_id, // Map rawjobs.job_id -> jobs.id
-                        title: cleanedData.title || rawJob.title,
-                        company: cleanedData.company || rawJob.company,
+                        title: jobTitle,
+                        company: jobCompany,
                         logo: companyLogo,
                         location: companyLocation,
                         date_posted: cleanedData.date_posted,
                         deadline: cleanedData.deadline,
                         company_email: cleanedData.company_email,
-                        description: cleanedData.description,
+                        description: descriptionToSave,
                         level: cleanedData.level,
-                        website: companyWebsite
+                        website: companyWebsite,
+                        slug: jobSlug,
+                        is_active: true
                     });
                     successCount++;
                     console.log(`[JobCleaner] Successfully saved job ${rawJob.job_id} (Company match: ${matchedCompany ? 'Yes' : 'No'})`);

@@ -10,8 +10,7 @@ router.get('/health', (req, res) => {
   });
 });
 
-// Add your API routes here
-// router.use('/users', require('../routes/users'));
-// router.use('/auth', require('../routes/auth'));
+// API routes
+router.use('/jobs', require('./jobs'));
 
 module.exports = router;

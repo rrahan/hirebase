@@ -40,14 +40,14 @@ export function Contact() {
 						{APP_EMAIL}
 					</a>
 				</Box>
-				<Box description="Physical office coming soon." icon={MapPin} title="Office">
+				<Box description="Drop by our office for a chat." icon={MapPin} title="Office">
 					<span className="font-medium font-mono text-sm tracking-wide text-muted-foreground">
 						Coming soon
 					</span>
 				</Box>
 				<Box
 					className="border-b-0 md:border-r-0"
-					description="Phone support coming soon."
+					description="We're available Mon-Fri, 9am-5pm."
 					icon={Phone}
 					title="Phone">
 					<span className="font-medium font-mono text-sm tracking-wide text-muted-foreground">

@@ -1,4 +1,5 @@
 import { NotFoundPage } from "@/components/not-found";
+import Header from "@/components/Header";
 
 export const metadata = {
     title: "Page Not Found",
@@ -10,5 +11,10 @@ export const metadata = {
 };
 
 export default function NotFound() {
-    return <NotFoundPage />;
+    return (
+        <>
+            <Header />
+            <NotFoundPage />
+        </>
+    );
 }

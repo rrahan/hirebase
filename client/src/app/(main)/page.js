@@ -157,18 +157,12 @@ export default function Home() {
 
       {/* About Section */}
       <section className="py-24 relative overflow-x-hidden">
-        {/* Grid Background Lines */}
-        <div className="hidden md:block absolute inset-0 w-screen left-1/2 right-1/2 -mx-[50vw] pointer-events-none">
-          <div className="h-full max-w-6xl mx-auto grid grid-cols-4 lg:grid-cols-6">
-            <div className="border-x border-border/50" />
-            <div className="border-r border-border/50" />
-            <div className="border-r border-border/50 hidden sm:block" />
-            <div className="border-r border-border/50 hidden sm:block" />
-            <div className="border-r border-border/50 hidden lg:block" />
-            <div className="border-r border-border/50 hidden lg:block" />
-          </div>
-        </div>
         <div className="mx-auto max-w-2xl px-6 relative z-10">
+          {/* Left vertical line */}
+          <div className="absolute left-0 -top-24 -bottom-24 w-px bg-border hidden md:block" />
+          {/* Right vertical line */}
+          <div className="absolute right-0 -top-24 -bottom-24 w-px bg-border hidden md:block" />
+
           <h2 className="selection:bg-[#149F65] text-3xl md:text-4xl font-bold tracking-tight mb-12 font-outfit">
             Why hirebase?
           </h2>
@@ -219,7 +213,7 @@ export default function Home() {
               >
                 We're the bouncer at the door of your career.
               </TextHighlighter>{" "}
-              If we can't verify the hiring manager's identity, the role doesn't get posted. Every listing on hirebase is verified for quality and legitimacy.
+              Every listing on hirebase is verified for quality and legitimacy. If we can't verify the hiring manager's identity, the role doesn't get posted.
               Your job search should be focused on finding the right fit, not avoiding scams.{" "}
               <TextHighlighter
                 className="rounded-[0.3em] px-1 text-primary-foreground"
