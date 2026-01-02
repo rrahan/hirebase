@@ -24,6 +24,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Health check / welcome route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Hirebase API is running',
+    version: 'v1',
+    endpoints: '/api/v1'
+  });
+});
+
 // API Routes
 app.use('/api/v1', require('./routes'));
 

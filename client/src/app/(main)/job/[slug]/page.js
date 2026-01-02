@@ -98,6 +98,16 @@ export async function generateMetadata({ params }) {
     const title = `${job.title} at ${job.company} | Hirebase`;
     const description = `${job.company} is hiring: ${job.title}. ${job.location || 'Location flexible'}`;
 
+    // Build OG image URL with query parameters
+    const ogImageParams = new URLSearchParams({
+        title: job.title,
+        company: job.company,
+        location: job.location || '',
+        level: job.level || '',
+        logo: job.logo || '',
+    });
+    const ogImageUrl = `/api/og?${ogImageParams.toString()}`;
+
     return {
         title,
         description,
@@ -115,10 +125,10 @@ export async function generateMetadata({ params }) {
             title: `${job.title} at ${job.company}`,
             description,
             type: "website",
-            url: `${process.env.NEXT_PUBLIC_SITE_URL}/job/${slug}`,
+            url: `/job/${slug}`,
             images: [
                 {
-                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}&level=${encodeURIComponent(job.level || '')}&logo=${encodeURIComponent(job.logo || '')}`,
+                    url: ogImageUrl,
                     width: 1200,
                     height: 630,
                     alt: `${job.title} at ${job.company}`,
@@ -129,7 +139,7 @@ export async function generateMetadata({ params }) {
             card: "summary_large_image",
             title: `${job.title} at ${job.company}`,
             description,
-            images: [`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location || '')}&level=${encodeURIComponent(job.level || '')}&logo=${encodeURIComponent(job.logo || '')}`],
+            images: [ogImageUrl],
         },
     };
 }
