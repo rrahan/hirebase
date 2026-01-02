@@ -46,7 +46,7 @@ export function WebSiteSchema() {
         "@id": "https://hirebase.xyz/#website",
         name: "hirebase",
         url: "https://hirebase.xyz",
-        description: "Raw feed of tech opportunities across Kerala. Updated in real-time directly from company career portals.",
+        description: "Tech opportunities across Kerala. Updated in real-time directly from company career portals.",
         publisher: {
             "@id": "https://hirebase.xyz/#organization",
         },

@@ -15,7 +15,7 @@ export const metadata = {
     default: "hirebase | Tech Jobs in Kerala | IT & Startup Jobs in Kerala",
     template: "%s | hirebase",
   },
-  description: "Raw feed of tech opportunities across Kerala. Updated in real-time directly from company career portals. Find jobs in Technopark, Infopark, Cyberpark and Kerala startups.",
+  description: "Tech opportunities across Kerala. Updated in real-time directly from company career portals. Find jobs in Technopark, Infopark, Cyberpark and Kerala startups.",
   keywords: [
     "Jobs in Kerala",
     "Tech jobs in Kochi",
@@ -63,8 +63,11 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Tech Jobs in Kerala | hirebase",
-    description: "Raw feed of tech opportunities across Kerala. Updated in real-time.",
+    description: "Tech opportunities across Kerala. Updated in real-time.",
     images: ["/og-image.png"],
+  },
+  alternates: {
+    canonical: 'https://hirebase.xyz',
   },
 };
 

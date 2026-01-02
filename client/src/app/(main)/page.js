@@ -20,7 +20,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-12 flex-shrink-0">
           <div className="mx-auto max-w-3xl text-center">
             {/* Animated Text - Hero */}
-            <div className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">
+            <h1 className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">
               <LayoutGroup>
                 <motion.div className="flex flex-wrap md:flex-nowrap md:whitespace-nowrap justify-center items-center gap-x-1 sm:gap-x-2" layout>
                   <motion.span
@@ -61,7 +61,7 @@ export default function Home() {
                   </motion.span>
                 </motion.div>
               </LayoutGroup>
-            </div>
+            </h1>
 
             {/* Headline
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
@@ -115,7 +115,7 @@ export default function Home() {
         </div>
         <br />
         <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-b border-border" />
-      </section>
+      </section >
 
       <section className="selection:bg-[#149F65] selection:text-white min-h-screen place-content-center font-outfit pt-8 md:pt-0">
         <FeatureSection />
@@ -236,6 +236,6 @@ export default function Home() {
         </div>
       </section>
       <div className="border-b-2 border-border" />
-    </div>
+    </div >
   );
 }
