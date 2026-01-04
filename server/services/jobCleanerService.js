@@ -1,5 +1,6 @@
 
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const Groq = require('groq-sdk');
 const { nanoid } = require('nanoid');
@@ -10,6 +11,79 @@ const { companies } = require('../schema/companies');
 const { eq, ilike, sql } = require('drizzle-orm');
 const { cleanCompanyName } = require('../utils/companyCleaner');
 const { SYSTEM_PROMPT } = require('../config/jobCleanerPrompt');
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+const CONFIG = {
+    MODEL: 'meta-llama/llama-4-scout-17b-16e-instruct',  // Optimal for structured extraction
+    DELAY_MS: 5000,           // 5 seconds between jobs (stays under 30K tokens/min)
+    MAX_JOBS_PER_RUN: 200,    // Batch limit to stay under 500K tokens/day
+    LOCK_FILE: path.resolve(__dirname, '../.job-cleaner.lock'),
+};
+
+// ============================================================================
+// LOCK FILE MANAGEMENT (Prevents overlapping cron runs)
+// ============================================================================
+function acquireLock() {
+    try {
+        if (fs.existsSync(CONFIG.LOCK_FILE)) {
+            // Check if lock is stale (older than 2 hours)
+            const stats = fs.statSync(CONFIG.LOCK_FILE);
+            const lockAge = Date.now() - stats.mtimeMs;
+            const twoHours = 2 * 60 * 60 * 1000;
+
+            if (lockAge > twoHours) {
+                console.log('[JobCleaner] Found stale lock file, removing...');
+                fs.unlinkSync(CONFIG.LOCK_FILE);
+            } else {
+                console.log('[JobCleaner] Another instance is running (lock file exists). Exiting.');
+                return false;
+            }
+        }
+
+        // Create lock file with current timestamp
+        fs.writeFileSync(CONFIG.LOCK_FILE, JSON.stringify({
+            pid: process.pid,
+            startedAt: new Date().toISOString()
+        }));
+        console.log('[JobCleaner] Lock acquired.');
+        return true;
+    } catch (error) {
+        console.error('[JobCleaner] Error acquiring lock:', error.message);
+        return false;
+    }
+}
+
+function releaseLock() {
+    try {
+        if (fs.existsSync(CONFIG.LOCK_FILE)) {
+            fs.unlinkSync(CONFIG.LOCK_FILE);
+            console.log('[JobCleaner] Lock released.');
+        }
+    } catch (error) {
+        console.error('[JobCleaner] Error releasing lock:', error.message);
+    }
+}
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Gets the current date in IST as YYYY-MM-DD string
+ * @returns {string} Current date in YYYY-MM-DD format
+ */
+function getCurrentISTDate() {
+    const now = new Date();
+    const istDate = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(now);
+    return istDate;
+}
 
 /**
  * Generates an SEO-friendly slug for a job posting
@@ -69,8 +143,9 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Normalizes a single job using Groq AI
+ * Returns { data, rateLimited } to handle rate limits gracefully
  * @param {Object} rawJob 
- * @returns {Promise<Object|null>}
+ * @returns {Promise<{data: Object|null, rateLimited: boolean}>}
  */
 async function cleanAndNormalizeJob(rawJob) {
     try {
@@ -80,7 +155,7 @@ async function cleanAndNormalizeJob(rawJob) {
             messages: [
                 { role: 'system', content: prompt }
             ],
-            model: 'openai/gpt-oss-120b',
+            model: CONFIG.MODEL,
             temperature: 0.1,
             response_format: { type: 'json_object' }
         });
@@ -88,10 +163,16 @@ async function cleanAndNormalizeJob(rawJob) {
         const content = completion.choices[0]?.message?.content;
         if (!content) throw new Error('No content from Groq');
 
-        return JSON.parse(content);
+        return { data: JSON.parse(content), rateLimited: false };
     } catch (error) {
+        // Check for rate limit errors (429)
+        if (error.status === 429 || error.message?.includes('rate limit') || error.message?.includes('429')) {
+            console.warn(`[JobCleaner] Rate limit hit! Stopping gracefully.`);
+            return { data: null, rateLimited: true };
+        }
+
         console.error(`[JobCleaner] Error normalizing job ${rawJob.job_id}:`, error.message);
-        return null;
+        return { data: null, rateLimited: false };
     }
 }
 
@@ -185,18 +266,68 @@ async function matchCompanyByName(companyName) {
 }
 
 /**
+ * Determines if a job should be active based on deadline and date_posted
+ * @param {string|null} deadline - Job deadline in YYYY-MM-DD format
+ * @param {string|null} datePosted - Date posted in YYYY-MM-DD format
+ * @returns {boolean} - Whether the job should be marked as active
+ */
+function calculateIsActive(deadline, datePosted) {
+    const currentDate = getCurrentISTDate();
+    const thirtyOneDaysAgo = (() => {
+        const date = new Date();
+        date.setDate(date.getDate() - 31);
+        return new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).format(date);
+    })();
+
+    // Check 1: Deadline has passed
+    if (deadline && deadline < currentDate) {
+        console.log(`[JobCleaner] Job deadline passed (${deadline}), setting is_active=false`);
+        return false;
+    }
+
+    // Check 2: date_posted is more than 31 days old
+    if (datePosted && datePosted < thirtyOneDaysAgo) {
+        console.log(`[JobCleaner] Job too old (${datePosted}), setting is_active=false`);
+        return false;
+    }
+
+    // Check 3: date_posted is null (treat as potentially stale)
+    if (!datePosted) {
+        console.log(`[JobCleaner] No date_posted, setting is_active=false`);
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Main service function to process raw jobs
  * Reads rawjobs one by one, cleans them, matches companies, and inserts into jobs table
- * prevents duplicates by checking if job_id already exists in jobs table
+ * - Prevents duplicates by checking if job_id already exists in jobs table
+ * - Limits to MAX_JOBS_PER_RUN to stay under daily token limits
+ * - Handles rate limits gracefully
+ * - Uses lock file to prevent overlapping runs
  */
 async function processRawJobs() {
     console.log('[JobCleaner] Starting job cleaning service...');
+    console.log(`[JobCleaner] Config: Model=${CONFIG.MODEL}, Delay=${CONFIG.DELAY_MS}ms, MaxJobs=${CONFIG.MAX_JOBS_PER_RUN}`);
+
+    // Try to acquire lock
+    if (!acquireLock()) {
+        return;
+    }
 
     try {
         // 1. Fetch all raw jobs
         const allRawJobs = await db.select().from(rawjobs);
         if (allRawJobs.length === 0) {
             console.log('[JobCleaner] No raw jobs found to process.');
+            releaseLock();
             return;
         }
 
@@ -207,19 +338,41 @@ async function processRawJobs() {
         // 3. Filter for unprocessed jobs
         const toProcess = allRawJobs.filter(job => !processedIds.has(job.job_id));
 
-        console.log(`[JobCleaner] Found ${toProcess.length} new jobs to process.`);
+        console.log(`[JobCleaner] Found ${toProcess.length} new jobs to process (limit: ${CONFIG.MAX_JOBS_PER_RUN}).`);
+
+        if (toProcess.length === 0) {
+            console.log('[JobCleaner] No new jobs to process.');
+            releaseLock();
+            return;
+        }
 
         let successCount = 0;
         let failCount = 0;
+        let skippedCount = 0;
+        let rateLimited = false;
 
-        // 4. Process one by one
-        for (const rawJob of toProcess) {
-            console.log(`[JobCleaner] Processing job ${rawJob.job_id}...`);
+        // 4. Process one by one, up to MAX_JOBS_PER_RUN
+        const jobsToProcess = toProcess.slice(0, CONFIG.MAX_JOBS_PER_RUN);
+        console.log(`[JobCleaner] Processing ${jobsToProcess.length} jobs this run...`);
+
+        for (let i = 0; i < jobsToProcess.length; i++) {
+            const rawJob = jobsToProcess[i];
+            console.log(`[JobCleaner] Processing job ${i + 1}/${jobsToProcess.length}: ${rawJob.job_id}...`);
 
             try {
-                const cleanedData = await cleanAndNormalizeJob(rawJob);
+                const result = await cleanAndNormalizeJob(rawJob);
 
-                if (cleanedData) {
+                // Check for rate limit
+                if (result.rateLimited) {
+                    rateLimited = true;
+                    skippedCount = jobsToProcess.length - i;
+                    console.log(`[JobCleaner] Rate limited! Stopping. ${skippedCount} jobs will be processed next run.`);
+                    break;
+                }
+
+                if (result.data) {
+                    const cleanedData = result.data;
+
                     // 5. Match company by name
                     const companyNameToMatch = cleanedData.company || rawJob.company;
                     const matchedCompany = await matchCompanyByName(companyNameToMatch);
@@ -241,6 +394,9 @@ async function processRawJobs() {
                         descriptionToSave = JSON.stringify(descriptionToSave);
                     }
 
+                    // Calculate is_active based on deadline and date_posted
+                    const isActive = calculateIsActive(cleanedData.deadline, cleanedData.date_posted);
+
                     await db.insert(jobs).values({
                         id: rawJob.job_id, // Map rawjobs.job_id -> jobs.id
                         title: jobTitle,
@@ -254,16 +410,16 @@ async function processRawJobs() {
                         level: cleanedData.level,
                         website: companyWebsite,
                         slug: jobSlug,
-                        is_active: true
+                        is_active: isActive
                     });
                     successCount++;
-                    console.log(`[JobCleaner] Successfully saved job ${rawJob.job_id} (Company match: ${matchedCompany ? 'Yes' : 'No'})`);
+                    console.log(`[JobCleaner] ✓ Saved job ${rawJob.job_id} (Company: ${matchedCompany ? 'matched' : 'no match'}, Active: ${isActive})`);
                 } else {
                     failCount++;
                 }
 
-                // Rate limit protection (2 seconds delay)
-                await delay(2000);
+                // Rate limit protection
+                await delay(CONFIG.DELAY_MS);
 
             } catch (err) {
                 console.error(`[JobCleaner] Failed to process/save job ${rawJob.job_id}:`, err);
@@ -271,10 +427,23 @@ async function processRawJobs() {
             }
         }
 
-        console.log(`[JobCleaner] Completed. Success: ${successCount}, Failed: ${failCount}`);
+        // Summary
+        const remaining = toProcess.length - successCount - failCount;
+        console.log(`[JobCleaner] ========================================`);
+        console.log(`[JobCleaner] Run completed!`);
+        console.log(`[JobCleaner]   ✓ Success: ${successCount}`);
+        console.log(`[JobCleaner]   ✗ Failed: ${failCount}`);
+        if (rateLimited) {
+            console.log(`[JobCleaner]   ⏸ Skipped (rate limit): ${skippedCount}`);
+        }
+        console.log(`[JobCleaner]   → Remaining for next run: ${remaining > 0 ? remaining : 0}`);
+        console.log(`[JobCleaner] ========================================`);
 
     } catch (err) {
-        console.error('[JobCleaner] Critical error execution:', err);
+        console.error('[JobCleaner] Critical error during execution:', err);
+    } finally {
+        // Always release lock
+        releaseLock();
     }
 }
 

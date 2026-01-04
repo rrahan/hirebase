@@ -98,38 +98,48 @@ async function runAllScrapers() {
 function initCronJobs() {
     console.log('[Cron] Initializing cron jobs...');
 
-    // Schedule for 11:30 PM IST (Indian Standard Time)
-    // 30 23 * * *
-    cron.schedule('30 23 * * *', () => {
+    // =========================================================================
+    // CRON SCHEDULE (all times in IST)
+    // =========================================================================
+    // 11:00 PM - Scrapers (~10-15 min)
+    // 11:30 PM - Job Cleaner (~17 min for 200 jobs, finishes ~11:47 PM)
+    // 12:00 AM - Job Deactivation (~2-3 min)
+    // =========================================================================
+
+    // 1. SCRAPERS - 11:00 PM IST
+    // Scrapes all job sources and saves to rawjobs table
+    cron.schedule('0 23 * * *', () => {
         runAllScrapers();
     }, {
         scheduled: true,
         timezone: "Asia/Kolkata"
     });
 
-    console.log('[Cron] Daily scraper job scheduled for 11:30 PM IST.');
+    console.log('[Cron] Daily scraper job scheduled for 11:00 PM IST.');
 
-    // Schedule Job Cleaner for 11:55 PM IST
-    // 55 23 * * *
-    cron.schedule('55 23 * * *', () => {
+    // 2. JOB CLEANER - 11:30 PM IST
+    // Cleans raw jobs with AI, inserts into jobs table (max 200 per run)
+    // Takes ~17 minutes (200 jobs × 5 sec delay)
+    cron.schedule('30 23 * * *', () => {
         processRawJobs();
     }, {
         scheduled: true,
         timezone: "Asia/Kolkata"
     });
 
-    console.log('[Cron] Job Cleaner service scheduled for 11:55 PM IST.');
+    console.log('[Cron] Job Cleaner service scheduled for 11:30 PM IST.');
 
-    // Schedule Job Deactivation for 12:05 AM IST (just past midnight)
-    // 5 0 * * *
-    cron.schedule('5 0 * * *', () => {
+    // 3. JOB DEACTIVATION - 12:00 AM IST (midnight)
+    // Deactivates expired jobs (deadline passed or >31 days old)
+    // Runs after cleaner finishes to catch any newly inserted expired jobs
+    cron.schedule('0 0 * * *', () => {
         deactivateExpiredJobs();
     }, {
         scheduled: true,
         timezone: "Asia/Kolkata"
     });
 
-    console.log('[Cron] Job Deactivation service scheduled for 12:05 AM IST.');
+    console.log('[Cron] Job Deactivation service scheduled for 12:00 AM IST.');
 }
 
 module.exports = {

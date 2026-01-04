@@ -145,33 +145,125 @@ export async function generateMetadata({ params }) {
 }
 
 // JSON-LD structured data for JobPosting schema
-function JobPostingSchema({ job }) {
+// Reference: https://developers.google.com/search/docs/appearance/structured-data/job-posting
+function JobPostingSchema({ job, slug }) {
+    // Detect if job is remote based on location text
+    const isRemote = job.location?.toLowerCase().includes('remote') ||
+        job.location?.toLowerCase().includes('work from home') ||
+        job.location?.toLowerCase().includes('wfh');
+
+    // Extract skills from description if available
+    const extractSkills = () => {
+        if (!job.description) return [];
+
+        // If description is an array (structured format), look for requirements
+        if (Array.isArray(job.description)) {
+            for (const section of job.description) {
+                if (section.requirements && Array.isArray(section.requirements)) {
+                    // Return first 10 requirements as skills
+                    return section.requirements.slice(0, 10);
+                }
+            }
+        }
+        return [];
+    };
+
+    const skills = extractSkills();
+
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
+
+        // Required properties
         title: job.title,
         description: formatDescription(job.description),
+        datePosted: job.date_posted || new Date().toISOString().split('T')[0],
+        validThrough: job.deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+
+        // Hiring Organization (required)
         hiringOrganization: {
             "@type": "Organization",
             name: job.company,
-            logo: job.logo,
+            sameAs: job.website ? (job.website.startsWith('http') ? job.website : `https://${job.website}`) : undefined,
+            logo: job.logo || undefined,
         },
+
+        // Job Location (required)
         jobLocation: {
             "@type": "Place",
             address: {
                 "@type": "PostalAddress",
-                addressLocality: job.location,
+                addressLocality: job.location || "Kerala",
+                addressRegion: "Kerala",
+                addressCountry: "IN",
             },
         },
-        employmentType: "FULL_TIME",
-        datePosted: job.date_posted || new Date().toISOString().split('T')[0],
-        validThrough: job.deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+
+        // Unique identifier for this job posting
+        identifier: {
+            "@type": "PropertyValue",
+            name: "hirebase",
+            value: slug,
+        },
+
+        // Employment type
+        employmentType: job.level?.toLowerCase().includes('intern') ? "INTERN" : "FULL_TIME",
+
+        // Indicates if candidates can apply directly
+        directApply: true,
+
+        // Industry
+        industry: "Technology",
+
+        // Applicant location requirements
+        applicantLocationRequirements: {
+            "@type": "Country",
+            name: "India",
+        },
     };
+
+    // Add remote work properties if applicable
+    if (isRemote) {
+        jsonLd.jobLocationType = "TELECOMMUTE";
+        // For remote jobs, applicant can be from anywhere
+        jsonLd.applicantLocationRequirements = [
+            { "@type": "Country", "name": "India" },
+        ];
+    }
+
+    // Add skills if extracted
+    if (skills.length > 0) {
+        jsonLd.skills = skills.join(", ");
+    }
+
+    // Add experience level based on job level
+    if (job.level) {
+        const levelLower = job.level.toLowerCase();
+        if (levelLower.includes('senior') || levelLower.includes('lead') || levelLower.includes('principal')) {
+            jsonLd.experienceRequirements = {
+                "@type": "OccupationalExperienceRequirements",
+                monthsOfExperience: 60, // 5+ years
+            };
+        } else if (levelLower.includes('mid') || levelLower.includes('intermediate')) {
+            jsonLd.experienceRequirements = {
+                "@type": "OccupationalExperienceRequirements",
+                monthsOfExperience: 24, // 2+ years
+            };
+        } else if (levelLower.includes('junior') || levelLower.includes('entry') || levelLower.includes('fresher')) {
+            jsonLd.experienceRequirements = {
+                "@type": "OccupationalExperienceRequirements",
+                monthsOfExperience: 0, // No experience required
+            };
+        }
+    }
+
+    // Clean up undefined values
+    const cleanJsonLd = JSON.parse(JSON.stringify(jsonLd));
 
     return (
         <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(cleanJsonLd) }}
         />
     );
 }
@@ -190,7 +282,7 @@ export default async function JobPage({ params }) {
 
     return (
         <>
-            <JobPostingSchema job={job} />
+            <JobPostingSchema job={job} slug={slug} />
             <BreadcrumbSchema
                 items={[
                     { name: "Home", url: "https://hirebase.xyz" },

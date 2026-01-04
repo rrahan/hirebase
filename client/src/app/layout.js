@@ -12,7 +12,7 @@ const MAINTENANCE_MODE = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
 export const metadata = {
   metadataBase: new URL('https://hirebase.xyz'),
   title: {
-    default: "hirebase | Tech Jobs in Kerala | IT & Startup Jobs in Kerala",
+    default: "hirebase | Tech & IT Jobs in Kerala",
     template: "%s | hirebase",
   },
   description: "Tech opportunities across Kerala. Updated in real-time directly from company career portals. Find jobs in Technopark, Infopark, Cyberpark and Kerala startups.",
@@ -48,6 +48,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
+    url: "https://hirebase.xyz",
     siteName: "hirebase",
     title: "Find your next role in Kerala's tech scene",
     description: "No middlemen or expired posts. A direct feed of jobs from Kerala's most ambitious teams.",
