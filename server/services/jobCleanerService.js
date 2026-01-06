@@ -1,6 +1,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const Groq = require('groq-sdk');
 const { nanoid } = require('nanoid');
@@ -132,6 +133,17 @@ function generateSEOSlug(title, company, location) {
     parts.push(shortId);
 
     return parts.join('-');
+}
+
+/**
+ * Generates a content hash from job title and company for deduplication
+ * @param {string} title - Job title
+ * @param {string} company - Company name
+ * @returns {string} MD5 hash of normalized title|company
+ */
+function generateContentHash(title, company) {
+    const normalized = `${(title || '').toLowerCase().trim()}|${(company || '').toLowerCase().trim()}`;
+    return crypto.createHash('md5').update(normalized).digest('hex');
 }
 
 const groq = new Groq({
@@ -331,11 +343,12 @@ async function processRawJobs() {
             return;
         }
 
-        // 2. Fetch already processed job IDs to prevent duplicates
-        const processedJobs = await db.select({ id: jobs.id }).from(jobs);
+        // 2. Fetch already processed job IDs and content hashes to prevent duplicates
+        const processedJobs = await db.select({ id: jobs.id, hash: jobs.content_hash }).from(jobs);
         const processedIds = new Set(processedJobs.map(j => j.id));
+        const processedHashes = new Set(processedJobs.filter(j => j.hash).map(j => j.hash));
 
-        // 3. Filter for unprocessed jobs
+        // 3. Filter for unprocessed jobs (by ID)
         const toProcess = allRawJobs.filter(job => !processedIds.has(job.job_id));
 
         console.log(`[JobCleaner] Found ${toProcess.length} new jobs to process (limit: ${CONFIG.MAX_JOBS_PER_RUN}).`);
@@ -349,6 +362,7 @@ async function processRawJobs() {
         let successCount = 0;
         let failCount = 0;
         let skippedCount = 0;
+        let duplicateCount = 0;
         let rateLimited = false;
 
         // 4. Process one by one, up to MAX_JOBS_PER_RUN
@@ -397,6 +411,16 @@ async function processRawJobs() {
                     // Calculate is_active based on deadline and date_posted
                     const isActive = calculateIsActive(cleanedData.deadline, cleanedData.date_posted);
 
+                    // Generate content hash for deduplication
+                    const contentHash = generateContentHash(jobTitle, jobCompany);
+
+                    // Check if same content already exists (duplicate job posting)
+                    if (processedHashes.has(contentHash)) {
+                        console.log(`[JobCleaner] ⏭ Skipping duplicate content: "${jobTitle}" at "${jobCompany}"`);
+                        duplicateCount++;
+                        continue;
+                    }
+
                     await db.insert(jobs).values({
                         id: rawJob.job_id, // Map rawjobs.job_id -> jobs.id
                         title: jobTitle,
@@ -410,8 +434,12 @@ async function processRawJobs() {
                         level: cleanedData.level,
                         website: companyWebsite,
                         slug: jobSlug,
-                        is_active: isActive
+                        is_active: isActive,
+                        content_hash: contentHash
                     });
+
+                    // Add to processed hashes to prevent duplicates within same run
+                    processedHashes.add(contentHash);
                     successCount++;
                     console.log(`[JobCleaner] ✓ Saved job ${rawJob.job_id} (Company: ${matchedCompany ? 'matched' : 'no match'}, Active: ${isActive})`);
                 } else {
@@ -433,6 +461,7 @@ async function processRawJobs() {
         console.log(`[JobCleaner] Run completed!`);
         console.log(`[JobCleaner]   ✓ Success: ${successCount}`);
         console.log(`[JobCleaner]   ✗ Failed: ${failCount}`);
+        console.log(`[JobCleaner]   ⏭ Duplicates skipped: ${duplicateCount}`);
         if (rateLimited) {
             console.log(`[JobCleaner]   ⏸ Skipped (rate limit): ${skippedCount}`);
         }

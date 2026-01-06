@@ -427,7 +427,7 @@ export default async function JobPage({ params }) {
                     <div className="flex items-center justify-center gap-2 py-2 text-xs md:text-sm text-foreground/70">
                         <span className="text-foreground">
                             Crafted by{" "}
-                            <a href="https://rahan.eu" target="_blank" rel="noopener" className="hover:underline">
+                            <a href="https://rahan.eu?utm_source=hirebase.xyz" target="_blank" rel="noopener" className="hover:underline">
                                 rahan
                             </a>
                         </span>

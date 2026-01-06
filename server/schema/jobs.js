@@ -13,7 +13,8 @@ const jobs = pgTable('jobs', {
     level: varchar('level'),
     website: varchar('website'),
     slug: varchar('slug'),
-    is_active: boolean('is_active').default(true)
+    is_active: boolean('is_active').default(true),
+    content_hash: varchar('content_hash')
 });
 
 module.exports = { jobs };

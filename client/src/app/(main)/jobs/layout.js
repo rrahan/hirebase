@@ -31,7 +31,7 @@ const SimpleFooter = () => (
             <div className="flex items-center justify-center gap-2 py-2 text-xs md:text-sm text-foreground/70">
                 <span className="text-foreground">
                     Crafted by{" "}
-                    <a href="https://rahan.eu" target="_blank" rel="noopener">
+                    <a href="https://rahan.eu?utm_source=hirebase.xyz" target="_blank" rel="noopener">
                         <UnderlineToBackground
                             underlineHeightRatio={0}
                             className="cursor-pointer"
