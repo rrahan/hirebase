@@ -3,9 +3,9 @@ import UnderlineToBackground from "@/components/fancy/text/underline-to-backgrou
 
 export const metadata = {
     title: "Privacy Policy",
-    description: "How Hirebase handles your data with transparency. No tracking cookies, no data selling, no ads. Your privacy matters.",
+    description: "How hirebase handles your data with transparency. No tracking cookies, no data selling, no ads. Your privacy matters.",
     openGraph: {
-        title: "Privacy Policy | Hirebase",
+        title: "Privacy Policy | hirebase",
         description: "Learn how we protect your data.",
     },
 };

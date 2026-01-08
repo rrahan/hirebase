@@ -20,7 +20,7 @@ export const metadata = {
         description: "Developer and design roles from Kerala startups. Direct openings from official company portals.",
     },
     twitter: {
-        title: "Tech Jobs in Kerala | Hirebase",
+        title: "Tech Jobs in Kerala | hirebase",
         description: "Real-time tech job listings from Technopark, Infopark, and Kerala startups.",
     },
 };

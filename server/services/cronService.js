@@ -11,10 +11,63 @@ const { scrapeInfoPark } = require('./scrapeInfoPark');
 const { processRawJobs } = require('./jobCleanerService');
 const { deactivateExpiredJobs } = require('./jobDeactivationService');
 
+// Configuration: Skip jobs older than this many days
+const MAX_JOB_AGE_DAYS = 60;
+
+/**
+ * Checks if a job's date_posted is too old (older than MAX_JOB_AGE_DAYS)
+ * @param {string} datePosted - Date string in various formats (YYYY-MM-DD, DD-MM-YYYY, etc.)
+ * @returns {boolean} - true if job is too old and should be skipped
+ */
+function isJobTooOld(datePosted) {
+    if (!datePosted) return false; // If no date, let it through (will be handled by cleaner)
+
+    const now = new Date();
+    const cutoffDate = new Date();
+    cutoffDate.setDate(now.getDate() - MAX_JOB_AGE_DAYS);
+
+    let parsedDate;
+
+    // Try parsing various date formats
+    // Format: YYYY-MM-DD (ISO)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(datePosted)) {
+        parsedDate = new Date(datePosted);
+    }
+    // Format: DD-MM-YYYY
+    else if (/^\d{2}-\d{2}-\d{4}$/.test(datePosted)) {
+        const [day, month, year] = datePosted.split('-');
+        parsedDate = new Date(`${year}-${month}-${day}`);
+    }
+    // Format: DD Mon YY (e.g., "27 Mar 25")
+    else if (/^\d{1,2}\s+\w+\s+\d{2}$/.test(datePosted)) {
+        const parts = datePosted.split(/\s+/);
+        const day = parts[0];
+        const month = parts[1];
+        const year = `20${parts[2]}`; // Assume 20xx
+        parsedDate = new Date(`${day} ${month} ${year}`);
+    }
+    // Format: DD/MM/YYYY
+    else if (/^\d{2}\/\d{2}\/\d{4}$/.test(datePosted)) {
+        const [day, month, year] = datePosted.split('/');
+        parsedDate = new Date(`${year}-${month}-${day}`);
+    }
+    // Fallback: try native parsing
+    else {
+        parsedDate = new Date(datePosted);
+    }
+
+    // If parsing failed, let the job through
+    if (isNaN(parsedDate.getTime())) {
+        return false;
+    }
+
+    return parsedDate < cutoffDate;
+}
 
 /**
  * Helper function to process and save scraped jobs
  * Checks for duplicates using job_id before inserting
+ * Filters out jobs older than MAX_JOB_AGE_DAYS
  */
 async function processAndSaveJobs(scraperName, scrapeFunction) {
     console.log(`[Cron] Starting ${scraperName}...`);
@@ -27,10 +80,17 @@ async function processAndSaveJobs(scraperName, scrapeFunction) {
 
         let newCount = 0;
         let skipCount = 0;
+        let oldSkipCount = 0;
         let errorCount = 0;
 
         for (const job of jobs) {
             try {
+                // Skip jobs that are too old (older than MAX_JOB_AGE_DAYS)
+                if (isJobTooOld(job.date_posted)) {
+                    oldSkipCount++;
+                    continue;
+                }
+
                 // Check if job_id already exists
                 const existing = await db.select({ id: rawjobs.job_id })
                     .from(rawjobs)
@@ -47,7 +107,7 @@ async function processAndSaveJobs(scraperName, scrapeFunction) {
                 errorCount++;
             }
         }
-        console.log(`[Cron] ${scraperName} finished. New: ${newCount}, Dupes: ${skipCount}, Errors: ${errorCount}, Total Scraped: ${jobs.length}`);
+        console.log(`[Cron] ${scraperName} finished. New: ${newCount}, Dupes: ${skipCount}, Old: ${oldSkipCount}, Errors: ${errorCount}, Total Scraped: ${jobs.length}`);
 
     } catch (err) {
         console.error(`[Cron] Critical error running ${scraperName}:`, err);

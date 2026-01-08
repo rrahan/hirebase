@@ -32,7 +32,7 @@ async function cleanAndNormalizeJob(rawJob) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
                 'HTTP-Referer': 'https://hirebase.xyz',
-                'X-Title': 'Hirebase Job Cleaner'
+                'X-Title': 'hirebase'
             },
             body: JSON.stringify({
                 model: OPENROUTER_MODEL,

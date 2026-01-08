@@ -3,10 +3,10 @@ import UnderlineToBackground from "@/components/fancy/text/underline-to-backgrou
 
 export const metadata = {
     title: "Terms of Service",
-    description: "Simple, fair terms for using Hirebase job search platform. No legal jargon, just clarity.",
+    description: "Simple, fair terms for using hirebase job search platform. No legal jargon, just clarity.",
     openGraph: {
-        title: "Terms of Service | Hirebase",
-        description: "Our terms for using Hirebase.",
+        title: "Terms of Service | hirebase",
+        description: "Our terms for using hirebase.",
     },
 };
 

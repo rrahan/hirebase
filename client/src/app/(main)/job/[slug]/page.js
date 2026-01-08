@@ -91,11 +91,11 @@ export async function generateMetadata({ params }) {
 
     if (!job) {
         return {
-            title: "Job Not Found | Hirebase",
+            title: "Job Not Found | hirebase",
         };
     }
 
-    const title = `${job.title} at ${job.company} | Hirebase`;
+    const title = `${job.title} at ${job.company} | hirebase`;
     const description = `${job.company} is hiring: ${job.title}. ${job.location || 'Location flexible'}`;
 
     // Build OG image URL with query parameters
