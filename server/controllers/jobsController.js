@@ -1,6 +1,6 @@
 const { db, schema } = require('../config/db');
 const { jobs } = schema;
-const { sql, desc, count, eq } = require('drizzle-orm');
+const { sql, desc, count, eq, gte, lt } = require('drizzle-orm');
 
 /**
  * Get all jobs with pagination
@@ -133,19 +133,28 @@ const getJobBySlug = async (req, res) => {
  */
 const getJobStats = async (req, res) => {
     try {
-        // Get current date in IST
+        // Get start of today in IST (midnight IST as UTC timestamp)
         const now = new Date();
-        const istDate = new Intl.DateTimeFormat('en-CA', {
+
+        // Get today's date in IST
+        const istFormatter = new Intl.DateTimeFormat('en-CA', {
             timeZone: 'Asia/Kolkata',
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
-        }).format(now);
+        });
+        const istDate = istFormatter.format(now);
 
-        // Count jobs added today (where date_posted = today's date)
+        // Create start of day timestamp (midnight IST = 18:30 UTC previous day)
+        const startOfDayIST = new Date(istDate + 'T00:00:00+05:30');
+        const endOfDayIST = new Date(istDate + 'T23:59:59.999+05:30');
+
+        // Count jobs added today (where created_at is within today IST)
         const todayResult = await db.select({ count: count() })
             .from(jobs)
-            .where(eq(jobs.date_posted, istDate));
+            .where(
+                sql`${jobs.created_at} >= ${startOfDayIST} AND ${jobs.created_at} <= ${endOfDayIST}`
+            );
 
         const jobsAddedToday = todayResult[0]?.count || 0;
 

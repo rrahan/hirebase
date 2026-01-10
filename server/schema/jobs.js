@@ -1,4 +1,4 @@
-const { pgTable, varchar, text, boolean } = require('drizzle-orm/pg-core');
+const { pgTable, varchar, text, boolean, timestamp } = require('drizzle-orm/pg-core');
 
 const jobs = pgTable('jobs', {
     id: varchar('id').primaryKey(),
@@ -14,7 +14,8 @@ const jobs = pgTable('jobs', {
     website: varchar('website'),
     slug: varchar('slug'),
     is_active: boolean('is_active').default(true),
-    content_hash: varchar('content_hash')
+    content_hash: varchar('content_hash'),
+    created_at: timestamp('created_at').defaultNow()
 });
 
 module.exports = { jobs };
