@@ -128,41 +128,58 @@ const getJobBySlug = async (req, res) => {
 };
 
 /**
- * Get job statistics including count of jobs added today
+ * Get job statistics including count of new jobs added
+ * Uses 11pm IST as the cutoff time (when job cleaner runs)
+ * - Before 11pm IST: shows jobs added since yesterday 11pm
+ * - After 11pm IST: shows jobs added since today 11pm
  * @route GET /api/v1/jobs/stats
  */
 const getJobStats = async (req, res) => {
     try {
-        // Get start of today in IST (midnight IST as UTC timestamp)
         const now = new Date();
 
+        // Get current time in IST
+        const istTimeFormatter = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Kolkata',
+            hour: '2-digit',
+            hour12: false
+        });
+        const currentHourIST = parseInt(istTimeFormatter.format(now));
+
         // Get today's date in IST
-        const istFormatter = new Intl.DateTimeFormat('en-CA', {
+        const istDateFormatter = new Intl.DateTimeFormat('en-CA', {
             timeZone: 'Asia/Kolkata',
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
         });
-        const istDate = istFormatter.format(now);
+        const todayIST = istDateFormatter.format(now);
 
-        // Create start of day timestamp (midnight IST = 18:30 UTC previous day)
-        const startOfDayIST = new Date(istDate + 'T00:00:00+05:30');
-        const endOfDayIST = new Date(istDate + 'T23:59:59.999+05:30');
+        // Calculate the cutoff timestamp (last 11pm IST)
+        let cutoffDate;
+        if (currentHourIST >= 23) {
+            // After 11pm today - use today's 11pm as cutoff
+            cutoffDate = new Date(todayIST + 'T23:00:00+05:30');
+        } else {
+            // Before 11pm today - use yesterday's 11pm as cutoff
+            const yesterday = new Date(now);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayIST = istDateFormatter.format(yesterday);
+            cutoffDate = new Date(yesterdayIST + 'T23:00:00+05:30');
+        }
 
-        // Count jobs added today (where created_at is within today IST)
-        const todayResult = await db.select({ count: count() })
+        // Count jobs added since the last 11pm cutoff
+        const result = await db.select({ count: count() })
             .from(jobs)
-            .where(
-                sql`${jobs.created_at} >= ${startOfDayIST} AND ${jobs.created_at} <= ${endOfDayIST}`
-            );
+            .where(sql`${jobs.created_at} >= ${cutoffDate}`);
 
-        const jobsAddedToday = todayResult[0]?.count || 0;
+        const newJobsCount = result[0]?.count || 0;
 
         res.status(200).json({
             success: true,
             data: {
-                jobsAddedToday,
-                date: istDate
+                newJobsCount,
+                currentDate: todayIST
             }
         });
     } catch (error) {

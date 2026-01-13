@@ -19,7 +19,7 @@ const { SYSTEM_PROMPT } = require('../config/jobCleanerPrompt');
 const CONFIG = {
     MODEL: 'meta-llama/llama-4-scout-17b-16e-instruct',  // Optimal for structured extraction
     DELAY_MS: 5000,           // 5 seconds between jobs (stays under 30K tokens/min)
-    MAX_JOBS_PER_RUN: 200,    // Batch limit to stay under 500K tokens/day
+    MAX_JOBS_PER_RUN: 225,    // Batch limit to stay under 500K tokens/day
     LOCK_FILE: path.resolve(__dirname, '../.job-cleaner.lock'),
 };
 

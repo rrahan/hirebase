@@ -94,7 +94,7 @@ export default function JobsPage() {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState(null);
-    const [jobsAddedToday, setJobsAddedToday] = useState(0);
+    const [newJobsCount, setNewJobsCount] = useState(0);
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 1,
@@ -154,7 +154,7 @@ export default function JobsPage() {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success) {
-                    setJobsAddedToday(data.data.jobsAddedToday);
+                    setNewJobsCount(data.data.newJobsCount);
                 }
             }
         } catch (err) {
@@ -231,7 +231,7 @@ export default function JobsPage() {
                     {/* Badge */}
                     <div className=" font-geist selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
                         <Badge2 variant="animated-border">
-                            {jobsAddedToday} new jobs added today
+                            Status: {newJobsCount} fresh roles indexed
                         </Badge2>
                     </div>
 
