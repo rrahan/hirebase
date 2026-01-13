@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import JobListingComponent from "@/components/smoothui/job-listing-component";
 import { Search } from "lucide-react";
@@ -8,6 +8,7 @@ import { Badge2 } from "@/components/ui/badge2";
 import { ChevronDownIcon } from "@/components/ui/chevron-down";
 import { Spinner } from "@/components/kibo-ui/spinner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { JobsFilterButton, JobsFilterPanel, useJobsFilter, scrollbarHideStyles } from "@/components/ui/jobs-filter";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -101,9 +102,42 @@ export default function JobsPage() {
         totalJobs: 0,
         hasNextPage: false,
     });
+    const [filters, setFilters] = useState({
+        level: [],
+        location: [],
+        company: [],
+        dateRange: [],
+    });
+
+    // Filter hook for managing filter panel state
+    const { isOpen: isFilterOpen, toggleOpen: toggleFilter, filterOptions, loading: filterLoading } = useJobsFilter();
+
+    // Calculate total selected filters
+    const totalSelectedFilters = Object.values(filters).reduce((acc, arr) => acc + (arr?.length || 0), 0);
+
+    // Clear all filters
+    const clearAllFilters = () => {
+        setFilters({
+            level: [],
+            location: [],
+            company: [],
+            dateRange: [],
+        });
+    };
+
+    // Build filter query string
+    const buildFilterParams = useCallback(() => {
+        const params = new URLSearchParams();
+        if (filters.level.length > 0) params.append('level', filters.level.join(','));
+        if (filters.location.length > 0) params.append('location', filters.location.join(','));
+        if (filters.company.length > 0) params.append('company', filters.company.join(','));
+        if (filters.dateRange.length > 0) params.append('dateRange', filters.dateRange[0]);
+        if (searchQuery.trim()) params.append('search', searchQuery.trim());
+        return params.toString();
+    }, [filters, searchQuery]);
 
     // Fetch jobs from API
-    const fetchJobs = async (page = 1, append = false) => {
+    const fetchJobs = async (page = 1, append = false, filterParams = '') => {
         try {
             if (append) {
                 setLoadingMore(true);
@@ -112,7 +146,9 @@ export default function JobsPage() {
             }
             setError(null);
 
-            const response = await fetch(`${API_BASE_URL}/api/v1/jobs?page=${page}&limit=10`);
+            const filterQuery = filterParams || buildFilterParams();
+            const url = `${API_BASE_URL}/api/v1/jobs?page=${page}&limit=10${filterQuery ? '&' + filterQuery : ''}`;
+            const response = await fetch(url);
 
             if (!response.ok) {
                 throw new Error("Failed to fetch jobs");
@@ -168,21 +204,28 @@ export default function JobsPage() {
         fetchStats();
     }, []);
 
-    // Filter jobs based on search (client-side filtering of loaded jobs)
-    const filteredJobs = useMemo(() => {
-        if (!searchQuery.trim()) return jobs;
+    // Re-fetch when filters change
+    useEffect(() => {
+        setJobs([]);
+        fetchJobs(1, false, buildFilterParams());
+    }, [filters]);
 
-        const query = searchQuery.toLowerCase();
-        return jobs.filter((job) =>
-            job.title.toLowerCase().includes(query) ||
-            job.company.toLowerCase().includes(query) ||
-            job.location?.toLowerCase().includes(query)
-        );
-    }, [searchQuery, jobs]);
+    // Debounced search - trigger API call after user stops typing
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            setJobs([]);
+            fetchJobs(1, false, buildFilterParams());
+        }, 300);
+
+        return () => clearTimeout(delayDebounce);
+    }, [searchQuery]);
+
+    // Jobs are already filtered by backend, just return as-is
+    const filteredJobs = jobs;
 
     const loadMore = () => {
         if (pagination.hasNextPage && !loadingMore) {
-            fetchJobs(pagination.currentPage + 1, true);
+            fetchJobs(pagination.currentPage + 1, true, buildFilterParams());
         }
     };
 
@@ -231,7 +274,7 @@ export default function JobsPage() {
                     {/* Badge */}
                     <div className=" font-geist selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
                         <Badge2 variant="animated-border">
-                            Status: {newJobsCount} fresh roles indexed
+                            Status: {newJobsCount} fresh jobs indexed
                         </Badge2>
                     </div>
 
@@ -253,16 +296,36 @@ export default function JobsPage() {
             {/* Search Section */}
             <section className="pb-4">
                 <div className="mx-auto max-w-3xl px-6">
+                    {/* Search Input with Filter Button */}
                     <div className="relative">
                         <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             type="text"
-                            placeholder="Search jobs by position, location or company name..."
+                            placeholder="Search jobs..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-14 pl-12 pr-4 bg-background border-border rounded-xl text-base font-outfit shadow-sm focus:ring-2 focus:ring-[#149F65]/20 focus:border-[#149F65] transition-all"
+                            className="h-14 pl-12 pr-28 bg-background border-border rounded-xl text-base font-outfit shadow-sm focus:ring-2 focus:ring-[#149F65]/20 focus:border-[#149F65] transition-all"
                         />
+                        {/* Filter Button - positioned inside search input */}
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                            <JobsFilterButton
+                                isOpen={isFilterOpen}
+                                onClick={toggleFilter}
+                                totalSelected={totalSelectedFilters}
+                            />
+                        </div>
                     </div>
+
+                    {/* Filter Panel - in document flow, pushes content down when open */}
+                    <JobsFilterPanel
+                        isOpen={isFilterOpen}
+                        selectedFilters={filters}
+                        onFiltersChange={setFilters}
+                        filterOptions={filterOptions}
+                        loading={filterLoading}
+                        onClearAll={clearAllFilters}
+                    />
+                    <style jsx global>{scrollbarHideStyles}</style>
                 </div>
             </section>
 
@@ -279,7 +342,7 @@ export default function JobsPage() {
                                 className="!p-0"
                             />
                             {/* Load More Button - inside card container */}
-                            {pagination.hasNextPage && !searchQuery && (
+                            {pagination.hasNextPage && (
                                 <div className="border-t border-border">
                                     <button
                                         onClick={loadMore}

@@ -14,8 +14,16 @@ You will be given a raw job JSON object. You must return a valid JSON object wit
    - The final title should contain ONLY the job role, nothing else
 
 2. company: Company name (cleaned, remove "Inc.", "Pvt Ltd" etc if still present).
-3. date_posted: Date in ISO 8601 format (YYYY-MM-DD) if possible.
-4. deadline: Date in ISO 8601 format (YYYY-MM-DD) if possible, otherwise null.
+3. date_posted: The date when the job was POSTED/PUBLISHED (not the deadline).
+   - Input dates are typically in DD-MM-YYYY format (Indian format)
+   - For example: "02-01-2026" means January 2nd, 2026 (NOT February 1st)
+   - Convert to ISO 8601 format: YYYY-MM-DD (e.g., "02-01-2026" → "2026-01-02")
+   - If date is unclear or missing, use null
+4. deadline: The application DEADLINE date (when to apply by).
+   - This is DIFFERENT from date_posted - do NOT confuse them
+   - Input dates are typically in DD-MM-YYYY format (Indian format)
+   - Convert to ISO 8601 format: YYYY-MM-DD
+   - If no deadline mentioned, return null
 5. company_email: Extract the careers or HR email from the job description. If multiple, pick the most relevant one. If none, return null.
 
 6. description: Transform the job description into a JSON array of objects. ALL descriptions MUST follow this EXACT format:
