@@ -151,24 +151,18 @@ const getFilterOptions = async (req, res) => {
             .where(and(eq(jobs.is_active, true), sql`${jobs.level} IS NOT NULL AND ${jobs.level} != ''`))
             .orderBy(jobs.level);
 
-        // Get unique locations with count
+        // Get unique locations (no count, sorted by most common first for UX)
         const locationsResult = await db
-            .select({
-                location: jobs.location,
-                count: count()
-            })
+            .selectDistinct({ location: jobs.location })
             .from(jobs)
             .where(and(eq(jobs.is_active, true), sql`${jobs.location} IS NOT NULL AND ${jobs.location} != ''`))
-            .groupBy(jobs.location)
-            .orderBy(desc(count()))
+            .orderBy(jobs.location)
             .limit(50);
 
-        // Get unique companies with count (sorted alphabetically, no limit)
-        // Use LOWER(TRIM()) to deduplicate companies with different casing/whitespace
+        // Get unique companies (sorted alphabetically, deduplicated by lowercase/trimmed)
         const companiesResult = await db
             .select({
-                company: sql`MIN(TRIM(${jobs.company}))`.as('company'),
-                count: count()
+                company: sql`MIN(TRIM(${jobs.company}))`.as('company')
             })
             .from(jobs)
             .where(and(eq(jobs.is_active, true), sql`${jobs.company} IS NOT NULL AND TRIM(${jobs.company}) != ''`))
@@ -185,8 +179,8 @@ const getFilterOptions = async (req, res) => {
             success: true,
             data: {
                 levels: levels,
-                locations: locationsResult.map(r => ({ label: r.location, count: r.count })),
-                companies: companiesResult.map(r => ({ label: r.company, count: r.count })),
+                locations: locationsResult.map(r => r.location),
+                companies: companiesResult.map(r => r.company),
                 dateRanges: [
                     { value: '1d', label: 'Last 24 hours' },
                     { value: '7d', label: 'Last 7 days' },
@@ -311,6 +305,9 @@ const getJobStats = async (req, res) => {
             .where(sql`${jobs.created_at} >= ${cutoffDate}`);
 
         const newJobsCount = result[0]?.count || 0;
+
+        // Cache stats for 1 hour, allow stale content while revalidating
+        res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=7200');
 
         res.status(200).json({
             success: true,

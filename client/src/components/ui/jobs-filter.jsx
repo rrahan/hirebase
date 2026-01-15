@@ -53,7 +53,6 @@ const FilterColumn = ({ title, items, selectedItems, onToggle, type = "checkbox"
             {items.map((item) => {
                 const value = typeof item === "string" ? item : item.value || item.label;
                 const label = typeof item === "string" ? item : item.label;
-                const count = typeof item === "object" ? item.count : null;
                 const isSelected = selectedItems.includes(value);
 
                 return (
@@ -61,7 +60,7 @@ const FilterColumn = ({ title, items, selectedItems, onToggle, type = "checkbox"
                         key={value}
                         onClick={() => onToggle(value)}
                         className={cn(
-                            "flex items-center justify-between px-3 py-2 rounded-md",
+                            "flex items-center px-3 py-2 rounded-md",
                             "transition-colors duration-100 text-left group",
                             "hover:bg-secondary/50",
                             isSelected && "bg-secondary"
@@ -89,11 +88,6 @@ const FilterColumn = ({ title, items, selectedItems, onToggle, type = "checkbox"
                                 {label}
                             </span>
                         </div>
-                        {count !== null && (
-                            <span className="text-[11px] font-medium text-muted-foreground ml-2 flex-shrink-0">
-                                {count}
-                            </span>
-                        )}
                     </button>
                 );
             })}

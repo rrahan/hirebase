@@ -21,10 +21,20 @@ export const metadata = {
     openGraph: {
         title: "Tech Jobs in Kerala | Technopark & Infopark",
         description: "Developer and design roles from Kerala startups. Direct openings from official company portals.",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "hirebase - Tech Jobs in Kerala",
+            },
+        ],
     },
     twitter: {
+        card: "summary_large_image",
         title: "Tech Jobs in Kerala | hirebase",
         description: "Real-time tech job listings from Technopark, Infopark, and Kerala startups.",
+        images: ["/og-image.png"],
     },
 };
 

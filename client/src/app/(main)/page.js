@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { LogoCloud } from "@/components/logo-cloud";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,24 @@ import { ArrowRight } from "lucide-react";
 import { FeatureSection } from "@/components/feature-section";
 import { CallToAction } from "@/components/cta";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Home() {
+  // Prefetch jobs stats API so it's cached when user navigates to /jobs
+  useEffect(() => {
+    // Use low priority fetch to not block main content
+    const prefetchStats = async () => {
+      try {
+        await fetch(`${API_BASE_URL}/api/v1/jobs/stats`, {
+          priority: 'low',
+          cache: 'force-cache'
+        });
+      } catch {
+        // Silently fail - this is just prefetching
+      }
+    };
+    prefetchStats();
+  }, []);
   return (
     <div className="flex flex-col overflow-x-hidden">
       {/* Hero Section */}
