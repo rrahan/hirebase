@@ -4,6 +4,9 @@ import UnderlineToBackground from "@/components/fancy/text/underline-to-backgrou
 export const metadata = {
     title: "FAQs",
     description: "Frequently asked questions about finding tech jobs in Kerala through hirebase. Learn how our real-time job feed works.",
+    alternates: {
+        canonical: 'https://hirebase.xyz/faqs',
+    },
     openGraph: {
         title: "FAQs | hirebase",
         description: "Get answers about tech job hunting in Kerala.",

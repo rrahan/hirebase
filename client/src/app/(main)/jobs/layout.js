@@ -15,6 +15,9 @@ export const metadata = {
         "Remote jobs for Keralites",
         "Fresher tech jobs Kerala",
     ],
+    alternates: {
+        canonical: 'https://hirebase.xyz/jobs',
+    },
     openGraph: {
         title: "Tech Jobs in Kerala | Technopark & Infopark",
         description: "Developer and design roles from Kerala startups. Direct openings from official company portals.",

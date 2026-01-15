@@ -242,7 +242,7 @@ export function JobsFilterPanel({
                                             className={cn(
                                                 "w-full px-3 py-2 rounded-lg text-sm font-medium font-outfit",
                                                 "bg-secondary text-foreground hover:bg-secondary/80",
-                                                "transition-colors duration-150"
+                                                "transition-colors duration-150 cursor-pointer"
                                             )}
                                         >
                                             Clear All Filters

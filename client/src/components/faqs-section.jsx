@@ -20,6 +20,17 @@ export function FaqsSection() {
 			{/* FAQPage Schema for rich results */}
 			<FAQPageSchema faqs={schemaFaqs} />
 
+			{/* Hidden crawlable content for search engines - rendered in HTML without JS */}
+			<div className="sr-only" aria-hidden="true">
+				<h1>Frequently Asked Questions - hirebase</h1>
+				{faqs.map((faq) => (
+					<article key={faq.id}>
+						<h2>{faq.title}</h2>
+						<p>{faq.content}</p>
+					</article>
+				))}
+			</div>
+
 			<section
 				className="mx-auto grid min-h-screen w-full max-w-5xl grid-cols-1 md:grid-cols-2 lg:border-x">
 				<div className="px-4 pt-12 pb-6">
