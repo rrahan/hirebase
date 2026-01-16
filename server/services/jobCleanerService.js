@@ -244,13 +244,35 @@ async function matchCompanyByName(companyName) {
 
         // 3. Try reverse contains (our search contains DB company name)
         // This handles "Feathersoft Info Solutions" matching "Feathersoft"
+        // But we need to be strict to avoid false positives like "reflectionsinfosystems" matching "infosys"
         const allCompanies = await db.select().from(companies);
 
         for (const company of allCompanies) {
             // Normalize DB company name the same way for comparison
             const normalizedDbName = normalizeForMatching(cleanCompanyName(company.name));
-            if (cleanedName.includes(normalizedDbName) || normalizedDbName.includes(cleanedName)) {
-                console.log(`[JobCleaner] Reverse contains match: ${company.name} for "${cleanedName}"`);
+
+            // Skip if DB company name is too short (less than 5 chars) - too risky for substring matching
+            if (normalizedDbName.length < 5) continue;
+
+            // Exact match after normalization
+            if (cleanedName === normalizedDbName) {
+                console.log(`[JobCleaner] Exact normalized match: ${company.name} for "${cleanedName}"`);
+                return company;
+            }
+
+            // For substring matching, require the DB name to be at least 50% of the search name length
+            // This prevents "infosys" (7 chars) from matching "reflectionsinfosystems" (22 chars) = 32% < 50%
+            // But allows "feathersoft" (11 chars) to match "feathersoftinfosolutions" (24 chars) = 46% - still rejected
+            // So we also check if the DB name is at the START of the search name (company name prefixes)
+            if (cleanedName.startsWith(normalizedDbName)) {
+                console.log(`[JobCleaner] Prefix match: ${company.name} for "${cleanedName}"`);
+                return company;
+            }
+
+            // For contains match (not prefix), require at least 60% coverage
+            if (cleanedName.includes(normalizedDbName) &&
+                normalizedDbName.length / cleanedName.length >= 0.6) {
+                console.log(`[JobCleaner] Substring match (>=60%): ${company.name} for "${cleanedName}"`);
                 return company;
             }
         }
@@ -363,6 +385,7 @@ async function processRawJobs() {
         let failCount = 0;
         let skippedCount = 0;
         let duplicateCount = 0;
+        let cleanedFromRawCount = 0;
         let rateLimited = false;
 
         // 4. Process one by one, up to MAX_JOBS_PER_RUN
@@ -418,6 +441,10 @@ async function processRawJobs() {
                     if (processedHashes.has(contentHash)) {
                         console.log(`[JobCleaner] ⏭ Skipping duplicate content: "${jobTitle}" at "${jobCompany}"`);
                         duplicateCount++;
+
+                        // Delete duplicate from rawjobs so it doesn't keep reappearing
+                        await db.delete(rawjobs).where(eq(rawjobs.job_id, rawJob.job_id));
+                        cleanedFromRawCount++;
                         continue;
                     }
 
@@ -442,6 +469,10 @@ async function processRawJobs() {
                     processedHashes.add(contentHash);
                     successCount++;
                     console.log(`[JobCleaner] ✓ Saved job ${rawJob.job_id} (Company: ${matchedCompany ? 'matched' : 'no match'}, Active: ${isActive})`);
+
+                    // Delete processed job from rawjobs
+                    await db.delete(rawjobs).where(eq(rawjobs.job_id, rawJob.job_id));
+                    cleanedFromRawCount++;
                 } else {
                     failCount++;
                 }
@@ -455,17 +486,20 @@ async function processRawJobs() {
             }
         }
 
-        // Summary
-        const remaining = toProcess.length - successCount - failCount;
+        // Summary - recalculate remaining based on what's actually left in rawjobs
+        const remainingRawJobs = await db.select({ count: sql`count(*)::int` }).from(rawjobs);
+        const actualRemaining = remainingRawJobs[0]?.count || 0;
+
         console.log(`[JobCleaner] ========================================`);
         console.log(`[JobCleaner] Run completed!`);
         console.log(`[JobCleaner]   ✓ Success: ${successCount}`);
         console.log(`[JobCleaner]   ✗ Failed: ${failCount}`);
         console.log(`[JobCleaner]   ⏭ Duplicates skipped: ${duplicateCount}`);
+        console.log(`[JobCleaner]   🧹 Cleaned from rawjobs: ${cleanedFromRawCount}`);
         if (rateLimited) {
             console.log(`[JobCleaner]   ⏸ Skipped (rate limit): ${skippedCount}`);
         }
-        console.log(`[JobCleaner]   → Remaining for next run: ${remaining > 0 ? remaining : 0}`);
+        console.log(`[JobCleaner]   → Remaining in rawjobs: ${actualRemaining}`);
         console.log(`[JobCleaner] ========================================`);
 
     } catch (err) {
