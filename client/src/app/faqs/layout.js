@@ -9,7 +9,21 @@ export const metadata = {
     },
     openGraph: {
         title: "FAQs | hirebase",
+        description: "Get answers about tech job hunting in Kerala. Learn how hirebase sources jobs directly from companies.",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "hirebase - Frequently Asked Questions",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "FAQs | hirebase",
         description: "Get answers about tech job hunting in Kerala.",
+        images: ["/og-image.png"],
     },
 };
 

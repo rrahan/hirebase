@@ -9,7 +9,21 @@ export const metadata = {
     },
     openGraph: {
         title: "Privacy Policy | hirebase",
+        description: "Learn how we protect your data. No tracking, no selling, no ads.",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "hirebase Privacy Policy",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Privacy Policy | hirebase",
         description: "Learn how we protect your data.",
+        images: ["/og-image.png"],
     },
 };
 

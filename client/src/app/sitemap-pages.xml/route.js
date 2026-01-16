@@ -1,40 +1,45 @@
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export async function GET() {
+    // Generate current date for frequently updated pages
+    const today = new Date().toISOString().split('T')[0];
+    // Use a recent fixed date for rarely updated pages (update when content changes)
+    const recentUpdate = '2026-01-16';
+
     const staticPages = [
         {
             url: SITE_URL,
-            lastModified: '2026-01-13',
+            lastModified: today,
             changeFrequency: 'daily',
             priority: 1.0,
         },
         {
             url: `${SITE_URL}/jobs`,
-            lastModified: '2026-01-13',
+            lastModified: today,
             changeFrequency: 'daily',
             priority: 0.9,
         },
         {
             url: `${SITE_URL}/contact`,
-            lastModified: '2026-01-01',
+            lastModified: recentUpdate,
             changeFrequency: 'monthly',
             priority: 0.3,
         },
         {
             url: `${SITE_URL}/privacy`,
-            lastModified: '2026-01-01',
+            lastModified: recentUpdate,
             changeFrequency: 'yearly',
             priority: 0.2,
         },
         {
             url: `${SITE_URL}/terms`,
-            lastModified: '2026-01-01',
+            lastModified: recentUpdate,
             changeFrequency: 'yearly',
             priority: 0.2,
         },
         {
             url: `${SITE_URL}/faqs`,
-            lastModified: '2026-01-01',
+            lastModified: recentUpdate,
             changeFrequency: 'monthly',
             priority: 0.3,
         },

@@ -10,6 +10,20 @@ export const metadata = {
     openGraph: {
         title: "Contact hirebase",
         description: "Reach out to our team for questions about tech jobs in Kerala.",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Contact hirebase",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Contact hirebase",
+        description: "Reach out to our team for questions about tech jobs in Kerala.",
+        images: ["/og-image.png"],
     },
 };
 

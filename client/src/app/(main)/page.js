@@ -32,6 +32,20 @@ export default function Home() {
   }, []);
   return (
     <div className="flex flex-col overflow-x-hidden">
+      {/* Hidden crawlable content for search engines - rendered in HTML without JS */}
+      <div className="sr-only" aria-hidden="true">
+        <h1>Tech & IT Jobs in Kerala | hirebase</h1>
+        <p>Find your next role in Kerala's tech scene. Discover thousands of job opportunities from top companies in Technopark, Infopark, Cyberpark, and Kerala startups.</p>
+        <h2>Why Choose hirebase?</h2>
+        <ul>
+          <li>Real-time job listings directly from company career portals</li>
+          <li>No middlemen or expired posts</li>
+          <li>Verified opportunities from Kerala's most ambitious teams</li>
+          <li>Software engineer, frontend developer, UI/UX designer jobs</li>
+          <li>Fresher and experienced tech jobs in Kochi, Trivandrum</li>
+        </ul>
+      </div>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden md:min-h-[calc(100vh-64px)] flex flex-col">
 
@@ -125,7 +139,7 @@ export default function Home() {
             <source srcSet="/hero-3.webp" />
             <img
               src="/hero-1.webp"
-              alt="Hero illustration"
+              alt="hirebase job board interface showing tech job listings from Kerala companies including Technopark and Infopark"
               className="w-full h-auto pointer-events-none invert dark:invert-0"
               draggable="false"
             />
