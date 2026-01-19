@@ -8,7 +8,7 @@ const nextConfig = {
       {
         source: '/sitemap.xml/',
         destination: '/sitemap.xml',
-        permanent: true, // Uses status code 308
+        permanent: true,
       },
       // Handle any trailing slashes on job paths
       {
