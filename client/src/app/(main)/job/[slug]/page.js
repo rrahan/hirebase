@@ -303,7 +303,7 @@ export default async function JobPage({ params }) {
                     <div className="-mx-6 px-6 py-2 border-b border-border flex items-center justify-between">
                         <Link
                             href="/jobs"
-                            className="-ml-4 inline-flex items-center justify-center gap-2 h-9 px-4 py-2 rounded-xl text-sm font-medium text-white bg-[#107A4D] hover:bg-[#149F65] border border-[#149F65]/50 shadow-md relative overflow-hidden before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-gradient-to-b before:from-white/20 before:to-transparent before:rounded-xl transition-all duration-200 active:scale-[0.96] font-outfit group"
+                            className="-ml-4 inline-flex items-center justify-center gap-2 h-9 px-4 py-2 rounded-xl text-sm font-medium text-white bg-[#107A4D] hover:bg-[#149F65] border border-[#149F65]/50 shadow-md relative overflow-hidden before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-linear-to-b before:from-white/20 before:to-transparent before:rounded-xl transition-all duration-200 active:scale-[0.96] font-outfit group"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back to all jobs
@@ -405,13 +405,12 @@ export default async function JobPage({ params }) {
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <div>
                                     <p className="text-foreground font-medium font-outfit">Interested in this role?</p>
-                                    <p className="text-sm text-muted-foreground font-outfit">Apply directly on the company website</p>
+                                    <p className="text-sm text-muted-foreground font-outfit">Apply Directly by Email</p>
                                 </div>
                                 <a
-                                    href={`${applyUrl}?utm_source=hirebase.xyz`}
-                                    target="_blank"
+                                    href={`mailto:${job.company_email}?subject=Application for ${encodeURIComponent(job.title)}`}
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 h-11 px-6 py-3 rounded-xl text-sm font-medium text-white cursor-pointer bg-[#107A4D] hover:bg-[#149F65] border border-[#149F65]/50 shadow-md relative overflow-hidden before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-gradient-to-b before:from-white/20 before:to-transparent before:rounded-xl transition-all duration-200 active:scale-[0.96] font-outfit"
+                                    className="inline-flex items-center justify-center gap-2 h-11 px-6 py-3 rounded-xl text-sm font-medium text-white cursor-pointer bg-[#107A4D] hover:bg-[#149F65] border border-[#149F65]/50 shadow-md relative overflow-hidden before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-linear-to-b before:from-white/20 before:to-transparent before:rounded-xl transition-all duration-200 active:scale-[0.96] font-outfit"
                                 >
                                     Apply Now
                                 </a>

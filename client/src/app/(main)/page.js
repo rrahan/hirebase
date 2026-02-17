@@ -49,7 +49,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden md:min-h-[calc(100vh-64px)] flex flex-col">
 
-        <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-12 flex-shrink-0">
+        <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-12 shrink-0">
           <div className="mx-auto max-w-3xl text-center">
             {/* Animated Text - Hero */}
             <h1 className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-semibold px-2">

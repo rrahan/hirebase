@@ -229,7 +229,7 @@ export default function JobsPageClient({ initialJobs, initialPagination, initial
         <div className="border border-border rounded-xl bg-card overflow-hidden">
             {[...Array(10)].map((_, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 border-b border-border last:border-b-0">
-                    <Skeleton className="h-10 w-10 rounded-lg flex-shrink-0" />
+                    <Skeleton className="h-10 w-10 rounded-lg shrink-0" />
                     <div className="flex-1 space-y-2">
                         <Skeleton className="h-4 w-3/4" />
                         <Skeleton className="h-3 w-1/2" />
@@ -330,7 +330,7 @@ export default function JobsPageClient({ initialJobs, initialPagination, initial
                             <JobListingComponent
                                 jobs={jobs}
                                 onJobClick={handleJobClick}
-                                className="!p-0"
+                                className="p-0!"
                             />
                             {/* Load More Button - inside card container */}
                             {pagination.hasNextPage && (

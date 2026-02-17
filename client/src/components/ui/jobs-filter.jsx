@@ -12,7 +12,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const FilterCheckbox = ({ checked }) => (
     <div
         className={cn(
-            "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 flex-shrink-0",
+            "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 shrink-0",
             checked
                 ? "bg-white border-white"
                 : "border-muted-foreground/50 group-hover:border-muted-foreground"
@@ -73,7 +73,7 @@ const FilterColumn = ({ title, items, selectedItems, onToggle, type = "checkbox"
                             {type === "radio" && (
                                 <div
                                     className={cn(
-                                        "w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-150 flex-shrink-0",
+                                        "w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-150 shrink-0",
                                         isSelected
                                             ? "border-white"
                                             : "border-muted-foreground/50 group-hover:border-muted-foreground"
@@ -108,7 +108,7 @@ export function JobsFilterButton({ isOpen, onClick, totalSelected }) {
                 isOpen && "text-foreground"
             )}
         >
-            <SlidersHorizontal size={18} className="flex-shrink-0 cursor-pointer" />
+            <SlidersHorizontal size={18} className="shrink-0 cursor-pointer" />
             <span className="hidden sm:inline cursor-pointer">Filters</span>
             {totalSelected > 0 && (
                 <motion.span
