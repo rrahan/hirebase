@@ -124,7 +124,7 @@ export default function JobListingComponent({
                   </div>
                   {/* Apply Button */}
                   <a
-                    href={`${getApplyUrl(activeItem)}?utm_source=hirebase.xyz`}
+                    href={`mailto:${activeItem.company_email}?subject=Application for ${encodeURIComponent(activeItem.title)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ml-4 shrink-0"

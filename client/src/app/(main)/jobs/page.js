@@ -40,6 +40,7 @@ function transformJobForServer(apiJob) {
         job_description: formatDescription(apiJob.description),
         level: apiJob.level,
         website: apiJob.website,
+        company_email: apiJob.company_email,
         date_posted: apiJob.date_posted,
         deadline: apiJob.deadline,
     };
