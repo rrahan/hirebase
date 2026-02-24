@@ -108,11 +108,11 @@ export default function JobListingComponent({
                       {activeItem.title}
                     </motion.div>
                     <motion.div
-                      className="text-muted-foreground text-sm"
+                      className="hidden sm:block text-muted-foreground text-sm"
                       layoutId={`workItemTitle-${activeItem.company}-${activeItem._index}`}>
                       {activeItem.company} · {activeItem.location} · {activeItem.remote === "Yes" ? "Remote" : activeItem.remote === "Hybrid" ? "Hybrid" : "On-site"}
                     </motion.div>
-                    <div className="flex flex-row flex-wrap gap-2 text-muted-foreground text-xs mt-1">
+                    <div className="hidden sm:flex flex-row flex-wrap gap-2 text-muted-foreground text-xs mt-1">
                       {activeItem.level && (
                         <span className="bg-secondary px-2 py-0.5 rounded">{activeItem.level}</span>
                       )}
