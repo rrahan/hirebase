@@ -33,7 +33,7 @@ const SimpleFooter = () => (
         <div className="mx-auto max-w-6xl px-6">
             <div className="selection:bg-[#149F65] selection:text-white flex items-center justify-center gap-2 py-2 text-xs md:text-sm text-foreground/70">
                 <span className="text-foreground">
-                    Built with ❤️ {" "}
+                    Built with ❤️ by{" "}
                     <a href="https://rahan.eu?utm_source=hirebase.xyz" target="_blank" rel="noopener">
                         <UnderlineToBackground
                             underlineHeightRatio={0}
