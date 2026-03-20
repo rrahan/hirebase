@@ -1,7 +1,7 @@
 import UnderlineToBackground from "@/components/fancy/text/underline-to-background"
 
 export const metadata = {
-    title: "Tech Jobs in Kerala | Technopark & Infopark Vacancies",
+    title: "Browse Jobs",
     description: "Find developer, designer, and startup jobs in Kerala. Real-time listings from Technopark, Infopark, and Kerala startups. No middlemen or expired posts. Direct feed from company career portals.",
     keywords: [
         "Technopark jobs",
@@ -19,20 +19,20 @@ export const metadata = {
         canonical: 'https://hirebase.xyz/jobs',
     },
     openGraph: {
-        title: "Tech Jobs in Kerala | Technopark & Infopark",
+        title: "Browse Jobs | hirebase",
         description: "Developer and design roles from Kerala startups. Direct openings from official company portals.",
         images: [
             {
                 url: "/og-image.png",
                 width: 1200,
                 height: 630,
-                alt: "hirebase - Tech Jobs in Kerala",
+                alt: "hirebase - Browse Jobs",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Tech Jobs in Kerala | hirebase",
+        title: "Browse Jobs | hirebase",
         description: "Real-time tech job listings from Technopark, Infopark, and Kerala startups.",
         images: ["/og-image.png"],
     },
