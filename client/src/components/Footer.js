@@ -73,7 +73,7 @@ export default function Footer() {
 
                 {/* Large Brand Name Section - Now at bottom */}
                 <div className="h-[150px] sm:h-[200px] md:h-[280px] lg:h-[350px] flex items-center justify-center select-none pointer-events-none overflow-hidden">
-                    <h2 className="opacity-90 text-center text-foreground text-[160px] sm:text-12xl md:text-[240px] lg:text-[290px] xl:text-[400px] font-outfit font-bold tracking-tight">
+                    <h2 className="opacity-90 text-center text-foreground text-[113px] sm:text-12xl md:text-[240px] lg:text-[290px] xl:text-[400px] font-outfit font-bold tracking-tight">
                         hirebase
                     </h2>
                 </div>
