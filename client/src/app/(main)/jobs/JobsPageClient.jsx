@@ -266,7 +266,7 @@ export default function JobsPageClient({ initialJobs, initialPagination, initial
                     {/* Badge */}
                     <div className=" font-geist selection:bg-[#149F65] selection:text-white flex justify-center mb-6">
                         <Badge2 variant="animated-border">
-                            Status: {newJobsCount} fresh jobs indexed
+                            Status: {newJobsCount} new jobs indexed today
                         </Badge2>
                     </div>
 
